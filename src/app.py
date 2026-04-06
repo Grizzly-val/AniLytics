@@ -131,14 +131,19 @@ async def get_seasonal_anime_clusters(season: Season, seasonYear: int, services 
         anime["title"]["romaji"]:
             {"averageScore": anime["averageScore"], 
             "popularity": anime["popularity"], 
-            "trending": anime["trending"]}
+            "trending": anime["trending"]
+            }
         for anime in data
     if anime["averageScore"] is not None
     and anime["popularity"] is not None
     and anime["trending"] is not None
     }
-
+    
     return clean_anime_data
 
 # @app.get("/underrated_{seasnon}_anime")
 # @app.get("/investigate_{genres}")
+
+
+
+
