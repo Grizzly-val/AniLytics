@@ -1,3 +1,13 @@
 A web-based dashboard that fetches anime data from an open API, processes and cleans the dataset, and applies data analysis techniques such as filtering, grouping, and sorting. The system is organized into three preset analytical tabs, each representing a specific question that users can explore through interactive visualizations.
 The first tab, “Leading Genres,” identifies the most dominant anime genres using grouping and counting techniques. The second tab, “Underrated Action Anime,” highlights action anime with relatively high scores but low popularity using filtering and comparative analysis. The third tab, “Genre Investigation,” serves as a specialized analysis view where the K-means clustering algorithm is applied to a selected genre to discover natural groupings of anime based on features such as score, popularity, and number of episodes.
 Through these tabs, users can explore both straightforward insights and deeper patterns within anime data, combining basic data analysis methods with unsupervised learning techniques for more advanced exploration.
+
+
+# Anilytics:
+- Backend's (or the API endpoints) function will mainly be to query AniListAPI for specific data for a preset number of pages (e.g. 5 pages of Action animes, sorted by POPULARITY_DESC)
+> In other words, Anilytics is an AniListAPI based dataset extractor and visualizer.
+
+### Stack
+- FastAPI (Python) for **Backend** | Essential **libraries** include: NumPy and Scikit Learn
+- Redis for **Caching**
+> Frontend will have to wait. (>_o)
