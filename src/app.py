@@ -28,6 +28,14 @@ app = FastAPI(lifespan=lifespan)
 
 
 
+"""
+NOTE:
+    I will work on these endpoints when I find the time.
+    Currently the app.py doesn't match the main function of AniLytics.
+"""
+
+
+
 
 
 @app.get("/seasonal_genres_ranking")
