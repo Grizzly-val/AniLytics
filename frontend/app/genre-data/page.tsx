@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Season, MediaFormat, GenreDataResponse } from "@/lib/types";
 import GenreBarChart from "@/components/charts/GenreBarChart";
+import { useGenreData } from "@/lib/hooks/useGenreData";
 
 const SEASONS: Season[] = ["WINTER", "SPRING", "SUMMER", "FALL"];
 const FORMATS: MediaFormat[] = [
@@ -23,53 +24,8 @@ export default function GenreDataPage() {
     "average_score" | "count" | "trending" | "popularity"
   >("average_score");
 
-  const [data, setData] = useState<GenreDataResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchData() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const queryParams = new URLSearchParams({
-          season,
-          seasonYear: seasonYear.toString(),
-          format,
-        });
-
-        const res = await fetch(`/api/genre-data?${queryParams.toString()}`, {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          const errBody = await res.json().catch(() => ({}));
-          throw new Error(errBody.error || `HTTP error! status: ${res.status}`);
-        }
-
-        const result: GenreDataResponse = await res.json();
-        setData(result);
-      } catch (err: any) {
-        if (err.name === "AbortError") {
-          return;
-        }
-        setError(err.message || "An unexpected error occurred.");
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, [season, seasonYear, format]);
+  const { data, error, loading } = useGenreData(season, seasonYear, format);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">

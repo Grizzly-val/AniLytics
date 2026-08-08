@@ -27,6 +27,7 @@ import {
   ProcessedAnime,
 } from "@/components/genre-detail/AnimeGrid";
 import { AnimeTable } from "@/components/genre-detail/AnimeTable";
+import { useGenreData } from "@/lib/hooks/useGenreData";
 
 interface PageProps {
   params: Promise<{ genre: string }>;
@@ -53,9 +54,7 @@ export default function GenreDetailPage({ params }: PageProps) {
     (searchParams.get("format") as MediaFormat) || "TV"
   );
 
-  const [data, setData] = useState<GenreDataResponse | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, error, loading } = useGenreData(season, seasonYear, format);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<SortByOption>("score");
@@ -65,48 +64,6 @@ export default function GenreDetailPage({ params }: PageProps) {
   const [highlightedTitle, setHighlightedTitle] = useState<string | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchData() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const queryParams = new URLSearchParams({
-          season,
-          seasonYear: seasonYear.toString(),
-          format,
-        });
-
-        const res = await fetch(`/api/genre-data?${queryParams.toString()}`, {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          const errBody = (await res.json().catch(() => ({}))) as { error?: string };
-          throw new Error(errBody.error || `HTTP error! status: ${res.status}`);
-        }
-
-        const result: GenreDataResponse = await res.json();
-        setData(result);
-      } catch (err: unknown) {
-        if (err instanceof Error && err.name === "AbortError") return;
-        const msg = err instanceof Error ? err.message : "An unexpected error occurred.";
-        setError(msg);
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, [season, seasonYear, format]);
 
   // Clean up timer on unmount
   useEffect(() => {
