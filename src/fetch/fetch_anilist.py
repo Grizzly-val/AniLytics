@@ -25,7 +25,6 @@ async def get_anime_data(query: str, variables: dict, client: httpx.AsyncClient)
 
             all_media += (data["data"]["Page"]["media"])
             hasNext = data["data"]["Page"]["pageInfo"]["hasNextPage"]
-            print(variables)
 
         return all_media
     
