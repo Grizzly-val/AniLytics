@@ -112,6 +112,7 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
             genre_data[genre]["average_trending"]       =  genre_totals[genre]["total_trending"] / genre_data[genre]["count"]
 
 
+    print("FETCHED AMPUTA!")
 
     return  genre_data
 
