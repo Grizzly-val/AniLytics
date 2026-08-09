@@ -8,11 +8,14 @@ from src.fetch import fetch_anilist
 
 from src.schemas import MediaFormat, Season
 
+from src.tools.logger import Logger
+
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.client = httpx.AsyncClient(timeout=httpx.Timeout(10.0))
+    app.state.logger = Logger(log_file_path="app.log", log_level="INFO").logger
     yield
     ...
 
@@ -38,6 +41,7 @@ NOTE:
 
 @app.get("/seasonal_genres_ranking")
 async def get_seasonal_genres_ranking(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
+
     query = """
 query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
     Page (page: $page, perPage: 50){
@@ -76,8 +80,6 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
         anime["title"]
     ]
     
-    print("CALLED /seasonal_genres_ranking")
-
     genre_data = {}
     genre_totals = {}
 
@@ -111,8 +113,7 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
             genre_data[genre]["average_popularity"]     =  genre_totals[genre]["total_popularity"] / genre_data[genre]["count"]
             genre_data[genre]["average_trending"]       =  genre_totals[genre]["total_trending"] / genre_data[genre]["count"]
 
-
-    print("FETCHED AMPUTA!")
+    services.logger.info(f"Fetched {len(clean_data)} anime entries for season {season} {seasonYear} with format {format}.")
 
     return  genre_data
 

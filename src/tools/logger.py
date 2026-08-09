@@ -1,6 +1,3 @@
-# implement a logger class that can be used to log messages to a log file and to the console. 
-# The logger should support different log levels (DEBUG, INFO, WARNING, ERROR, CRITICAL) 
-# and should allow the user to specify the log file path and the log level.
 
 import logging
 
@@ -10,7 +7,7 @@ class Logger:
         self.logger.setLevel(getattr(logging, log_level.upper(), logging.INFO))
 
         # Create file handler which logs messages to a file
-        file_handler = logging.FileHandler(log_file_path)
+        file_handler = logging.FileHandler(log_file_path, mode= 'w')
         file_handler.setLevel(getattr(logging, log_level.upper(), logging.INFO))
 
         # Create console handler which logs messages to the console
