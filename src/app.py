@@ -39,7 +39,7 @@ NOTE:
 
 
 
-@app.get("/seasonal_genres_ranking")
+@app.get("/seasonal_genres/aggregates")
 async def get_seasonal_genres_ranking(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
 
     query = """
@@ -118,8 +118,8 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
     return  genre_data
 
 
-    # Fetching desired dataset: DONE
-    # Next is use Numpy to normalize data into tabular format for processing
-    # Then display on frontend
 
 
+@app.get("/seasonal_genres/animes")
+async def get_seasonal_genres_animes(services = Depends(Services)) -> dict:
+    return {"message": "This endpoint is under construction. Please check back later."}
