@@ -15,7 +15,8 @@ import { Season, MediaFormat, GenreDataResponse } from "@/lib/types";
 
 interface GenreBarChartProps {
   data: GenreDataResponse;
-  metric: "average_score" | "count" | "trending" | "popularity";
+  metric: "count" | "average_score" | "trending" | "popularity";
+  onMetricChange?: (metric: "count" | "average_score" | "trending" | "popularity") => void;
   season?: Season;
   seasonYear?: number;
   format?: MediaFormat;
@@ -24,6 +25,7 @@ interface GenreBarChartProps {
 export default function GenreBarChart({
   data,
   metric,
+  onMetricChange,
   season,
   seasonYear,
   format,
@@ -36,12 +38,11 @@ export default function GenreBarChart({
       if (season) queryParams.set("season", season);
       if (seasonYear) queryParams.set("seasonYear", seasonYear.toString());
       if (format) queryParams.set("format", format);
+      queryParams.set("fromBarClick", "true");
 
       const queryString = queryParams.toString();
       router.push(
-        `/genre-detail/${encodeURIComponent(entry.genre)}${
-          queryString ? `?${queryString}` : ""
-        }`
+        `/genre-detail/${encodeURIComponent(entry.genre)}?${queryString}`
       );
     }
   };
@@ -115,11 +116,31 @@ export default function GenreBarChart({
 
   return (
     <div className="w-full rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 sm:p-6 shadow-xl backdrop-blur-sm">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white">
-          {metricConfig.label} by Genre
-        </h3>
-        <span className="text-xs text-neutral-400">{chartData.length} Genres</span>
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-800/80 pb-4">
+        <div>
+          <h3 className="text-lg font-semibold text-white">
+            {metricConfig.label} by Genre
+          </h3>
+          <span className="text-xs text-neutral-400">{chartData.length} Genres</span>
+        </div>
+        {onMetricChange && (
+          <div className="flex items-center gap-2 bg-neutral-800/60 p-1.5 rounded-lg border border-neutral-700/60">
+            <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400 pl-1">
+              Metric:
+            </label>
+            <select
+              id="chart-metric-select"
+              value={metric}
+              onChange={(e) => onMetricChange(e.target.value as any)}
+              className="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white focus:border-indigo-500 focus:outline-none transition cursor-pointer"
+            >
+              <option value="count">Count</option>
+              <option value="average_score">Average Score</option>
+              <option value="popularity">Popularity</option>
+              <option value="trending">Trending</option>
+            </select>
+          </div>
+        )}
       </div>
       <div style={{ width: "100%", height: chartHeight }}>
         <ResponsiveContainer width="100%" height="100%">

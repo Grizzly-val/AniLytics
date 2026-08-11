@@ -11,16 +11,26 @@ const fetcher = async (url: string): Promise<GenreDataResponse> => {
 };
 
 export function useGenreData(
-  season: Season,
-  seasonYear: number,
-  format: MediaFormat
+  season: Season | "" | null,
+  seasonYear: number | null,
+  format: MediaFormat | "" | null,
+  enabled: boolean = true
 ) {
-  const queryParams = new URLSearchParams({
-    season,
-    seasonYear: seasonYear.toString(),
-    format,
-  });
-  const key = `/api/genre-data?${queryParams.toString()}`;
+  const shouldFetch =
+    enabled &&
+    Boolean(season) &&
+    Boolean(seasonYear) &&
+    Boolean(format);
+
+  const queryParams = shouldFetch
+    ? new URLSearchParams({
+        season: season as string,
+        seasonYear: (seasonYear as number).toString(),
+        format: format as string,
+      }).toString()
+    : "";
+
+  const key = shouldFetch ? `/api/genre-data?${queryParams}` : null;
 
   const { data, error, isLoading } = useSWR<GenreDataResponse>(key, fetcher, {
     revalidateIfStale: false,
@@ -28,5 +38,9 @@ export function useGenreData(
     revalidateOnReconnect: false,
   });
 
-  return { data: data ?? null, error: error?.message ?? null, loading: isLoading };
+  return {
+    data: data ?? null,
+    error: error?.message ?? null,
+    loading: isLoading && shouldFetch,
+  };
 }

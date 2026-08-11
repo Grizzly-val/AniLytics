@@ -5,4 +5,5 @@ export interface Dashboard {
 
 export const dashboards: Dashboard[] = [
   { slug: "genre-data", label: "Genre Data" },
+  { slug: "genre-detail", label: "Genre Detail" },
 ];

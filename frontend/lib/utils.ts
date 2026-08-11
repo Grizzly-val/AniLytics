@@ -36,3 +36,18 @@ export function getAnimeDomId(title: string): string {
   return `anime-item-${encodeURIComponent(title)}`;
 }
 
+export function getCurrentSeason(date: Date = new Date()): Season {
+  const month = date.getMonth();
+  if (month >= 0 && month <= 2) return "WINTER";
+  if (month >= 3 && month <= 5) return "SPRING";
+  if (month >= 6 && month <= 8) return "SUMMER";
+  return "FALL";
+}
+
+export function getCurrentYear(date: Date = new Date()): number {
+  return date.getFullYear();
+}
+
+export const DEFAULT_FORMAT: MediaFormat = "TV";
+
+
