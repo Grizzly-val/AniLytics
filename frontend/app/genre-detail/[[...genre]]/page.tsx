@@ -356,13 +356,18 @@ export default function GenreDetailPage({ params }: PageProps) {
         <>
           {!selectedGenre ? (
             /* State B: Genres loaded but no genre selected */
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-12 text-center space-y-3">
-              <div className="text-4xl">🎭</div>
-              <h3 className="text-lg font-semibold text-white">
-                Select a Genre to View Analytics
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-10 text-center">
+              <div className="mb-4 flex justify-center">
+                <span className="rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-indigo-300">
+                  {availableGenres.length} loaded genres
+                </span>
+              </div>
+              <div className="text-4xl">📺</div>
+              <h3 className="mt-4 text-xl font-semibold text-white">
+                Choose a genre
               </h3>
-              <p className="text-neutral-400 text-sm max-w-md mx-auto">
-                Select any of the loaded genres for {activeSeason} {activeYear} · {activeFormat}
+              <p className="mx-auto mt-2 max-w-md text-sm text-neutral-400">
+                {availableGenres.length} genres are ready for {activeSeason} {activeYear} · {activeFormat}. Pick one to view the detailed analytics.
               </p>
             </div>
           ) : !genreStats ? (
