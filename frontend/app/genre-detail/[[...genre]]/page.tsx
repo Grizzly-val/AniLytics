@@ -119,20 +119,14 @@ export default function GenreDetailPage({ params }: PageProps) {
 
   const handleSeasonChange = useCallback((season: Season) => {
     setSeasonInput(season);
-    setHasLoadedGenres(false);
-    setIsSubmitted(false);
   }, []);
 
   const handleYearChange = useCallback((year: number) => {
     setSeasonYearInput(year);
-    setHasLoadedGenres(false);
-    setIsSubmitted(false);
   }, []);
 
   const handleFormatChange = useCallback((format: MediaFormat) => {
     setFormatInput(format);
-    setHasLoadedGenres(false);
-    setIsSubmitted(false);
   }, []);
 
   const handleLoadGenres = useCallback(() => {
@@ -143,6 +137,12 @@ export default function GenreDetailPage({ params }: PageProps) {
     setHasLoadedGenres(true);
     setSelectedGenre("");
   }, [seasonInput, seasonYearInput, formatInput]);
+
+  const isFilterUnchanged =
+    isSubmitted &&
+    seasonInput === activeSeason &&
+    seasonYearInput === activeYear &&
+    formatInput === activeFormat;
 
   // Computed error state (API error or empty backend result)
   const apiError = useMemo(() => {
@@ -314,6 +314,7 @@ export default function GenreDetailPage({ params }: PageProps) {
           onLoadGenres={handleLoadGenres}
           isLoadingGenres={loading}
           hasLoadedGenres={hasLoadedGenres && availableGenres.length > 0}
+          isLoadDisabled={isFilterUnchanged}
           errorMessage={apiError}
           hideBackLink={isFromHomepage}
         />

@@ -19,6 +19,7 @@ interface GenreHeaderProps {
   onLoadGenres: () => void;
   isLoadingGenres?: boolean;
   hasLoadedGenres?: boolean;
+  isLoadDisabled?: boolean;
   errorMessage?: string | null;
   hideBackLink?: boolean;
 }
@@ -37,6 +38,7 @@ export const GenreHeader = memo(function GenreHeader({
   onLoadGenres,
   isLoadingGenres = false,
   hasLoadedGenres = false,
+  isLoadDisabled = false,
   errorMessage = null,
   hideBackLink = false,
 }: GenreHeaderProps) {
@@ -203,7 +205,7 @@ export const GenreHeader = memo(function GenreHeader({
               id="load-genres-button"
               type="button"
               onClick={handleLoadGenresClick}
-              disabled={isLoadingGenres}
+              disabled={isLoadingGenres || isLoadDisabled}
               className="w-full h-[38px] rounded-lg bg-indigo-600 px-4 text-xs font-semibold text-white shadow-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2 cursor-pointer"
             >
               {isLoadingGenres ? (
