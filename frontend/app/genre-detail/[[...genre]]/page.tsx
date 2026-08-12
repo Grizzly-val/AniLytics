@@ -95,16 +95,18 @@ export default function GenreDetailPage({ params }: PageProps) {
     return Object.keys(data).sort();
   }, [data]);
 
-  // Keep selectedGenre in sync if missing or changed
+  // Sync selectedGenre only when decodedGenreFromPath actually changes via route navigation
+  const prevDecodedGenreRef = useRef(decodedGenreFromPath);
   useEffect(() => {
-    if (decodedGenreFromPath) {
-      setSelectedGenre(decodedGenreFromPath);
-    } else if (!selectedGenre && availableGenres.length > 0) {
-      setSelectedGenre(availableGenres[0]);
+    if (decodedGenreFromPath !== prevDecodedGenreRef.current) {
+      prevDecodedGenreRef.current = decodedGenreFromPath;
+      if (decodedGenreFromPath) {
+        setSelectedGenre(decodedGenreFromPath);
+      }
     }
-  }, [decodedGenreFromPath, availableGenres, selectedGenre]);
+  }, [decodedGenreFromPath]);
 
-  const activeGenreName = decodedGenreFromPath || selectedGenre;
+  const activeGenreName = selectedGenre;
 
   // Clean up timer on unmount
   useEffect(() => {
@@ -118,16 +120,19 @@ export default function GenreDetailPage({ params }: PageProps) {
   const handleSeasonChange = useCallback((season: Season) => {
     setSeasonInput(season);
     setHasLoadedGenres(false);
+    setIsSubmitted(false);
   }, []);
 
   const handleYearChange = useCallback((year: number) => {
     setSeasonYearInput(year);
     setHasLoadedGenres(false);
+    setIsSubmitted(false);
   }, []);
 
   const handleFormatChange = useCallback((format: MediaFormat) => {
     setFormatInput(format);
     setHasLoadedGenres(false);
+    setIsSubmitted(false);
   }, []);
 
   const handleLoadGenres = useCallback(() => {
@@ -136,6 +141,7 @@ export default function GenreDetailPage({ params }: PageProps) {
     setActiveFormat(formatInput);
     setIsSubmitted(true);
     setHasLoadedGenres(true);
+    setSelectedGenre("");
   }, [seasonInput, seasonYearInput, formatInput]);
 
   // Computed error state (API error or empty backend result)
@@ -331,7 +337,7 @@ export default function GenreDetailPage({ params }: PageProps) {
         <div className="flex flex-col items-center justify-center h-64 rounded-xl border border-neutral-800 bg-neutral-900/40 p-8 space-y-4">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
           <p className="text-neutral-400 text-sm animate-pulse">
-            Fetching {activeGenreName || "genre"} analytics...
+            Fetching available genres...
           </p>
         </div>
       )}
@@ -347,7 +353,19 @@ export default function GenreDetailPage({ params }: PageProps) {
       {/* Main Content */}
       {isSubmitted && !loading && !apiError && (
         <>
-          {!genreStats ? (
+          {!selectedGenre ? (
+            /* State B: Genres loaded but no genre selected */
+            <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-12 text-center space-y-3">
+              <div className="text-4xl">🎭</div>
+              <h3 className="text-lg font-semibold text-white">
+                Select a Genre to View Analytics
+              </h3>
+              <p className="text-neutral-400 text-sm max-w-md mx-auto">
+                Select any of the loaded genres for {activeSeason} {activeYear} · {activeFormat}
+              </p>
+            </div>
+          ) : !genreStats ? (
+            /* Selected genre has no data */
             <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-12 text-center space-y-4">
               <div className="text-4xl">📊</div>
               <h3 className="text-xl font-semibold text-white">

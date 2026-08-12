@@ -42,7 +42,7 @@ export const GenreHeader = memo(function GenreHeader({
 }: GenreHeaderProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const currentGenreName = decodedGenre || selectedGenre || "Genre Detail";
+  const currentGenreName = selectedGenre || "Genre Detail";
 
   const handleLoadGenresClick = () => {
     // Input validation
@@ -99,7 +99,7 @@ export const GenreHeader = memo(function GenreHeader({
             )}
           </div>
           <p className="text-neutral-400 text-sm mt-1">
-            Detailed breakdown and performance analytics for {currentGenreName} anime.
+            Detailed breakdown and performance analytics for {selectedGenre ? `${selectedGenre} anime` : "the selected anime genre"}.
           </p>
         </div>
       </div>
