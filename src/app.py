@@ -39,8 +39,8 @@ NOTE:
 
 
 
-@app.get("/seasonal_genres/aggregates")
-async def get_seasonal_genres_ranking(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
+@app.get("/seasonal_genres")
+async def get_seasonal_genres_data(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
 
     query = """
 query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
@@ -65,10 +65,11 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
     }
 }
             """
-    
+
+    services.logger.info("...")
     json_variables = {"currentPage": 1, "season": season, "seasonYear": seasonYear, "format": format}
     
-    data = await fetch_anilist.get_anime_data(query=query, variables=json_variables, client=services.client)
+    data = await fetch_anilist.get_anime_data(query=query, variables=json_variables, client=services.client, logger=services.logger)
     
     clean_data = [
         anime for anime in data
@@ -113,13 +114,8 @@ query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat)
             genre_data[genre]["average_popularity"]     =  genre_totals[genre]["total_popularity"] / genre_data[genre]["count"]
             genre_data[genre]["average_trending"]       =  genre_totals[genre]["total_trending"] / genre_data[genre]["count"]
 
+
     services.logger.info(f"Fetched {len(clean_data)} anime entries for season {season} {seasonYear} with format {format}.")
 
+
     return  genre_data
-
-
-
-
-@app.get("/seasonal_genres/animes")
-async def get_seasonal_genres_animes(services = Depends(Services)) -> dict:
-    return {"message": "This endpoint is under construction. Please check back later."}

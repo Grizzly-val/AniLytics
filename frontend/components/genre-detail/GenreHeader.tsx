@@ -81,11 +81,11 @@ export const GenreHeader = memo(function GenreHeader({
         <div>
           {!hideBackLink && (
             <Link
-              href="/genre-data"
+              href="/seasonal/genres/aggregates"
               className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition mb-2"
               id="back-to-genre-data-link"
             >
-              &larr; Back to Genre Overview
+              &larr; Back to Genre Aggregates
             </Link>
           )}
           <div className="flex items-center gap-3">

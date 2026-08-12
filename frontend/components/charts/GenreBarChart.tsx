@@ -42,7 +42,7 @@ export default function GenreBarChart({
 
       const queryString = queryParams.toString();
       router.push(
-        `/genre-detail/${encodeURIComponent(entry.genre)}?${queryString}`
+        `/seasonal/genres/genre-animes/${encodeURIComponent(entry.genre)}?${queryString}`
       );
     }
   };

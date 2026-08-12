@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Season, MediaFormat } from "@/lib/types";
 import GenreBarChart from "@/components/charts/GenreBarChart";
 import { useGenreData } from "@/lib/hooks/useGenreData";
 import { SEASONS, FORMATS, getCurrentSeason, getCurrentYear, DEFAULT_FORMAT } from "@/lib/utils";
 
-export default function GenreDataPage() {
+export default function GenreAggregatesPage() {
   // Input control states (default to current season, year, and TV format)
   const [seasonInput, setSeasonInput] = useState<Season>(getCurrentSeason());
   const [seasonYearInput, setSeasonYearInput] = useState<number>(getCurrentYear());
@@ -44,13 +45,40 @@ export default function GenreDataPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">
-          Genre Data
-        </h1>
-        <p className="text-neutral-400 mt-1 text-sm">
-          Filter and analyze anime counts, average scores, popularity, and trending metrics across anime genres by season and format.
-        </p>
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-xs font-medium text-neutral-400">
+        <Link href="/" className="hover:text-neutral-200 transition">
+          Home
+        </Link>
+        <span>/</span>
+        <Link href="/seasonal" className="hover:text-neutral-200 transition">
+          Seasonal Analytics
+        </Link>
+        <span>/</span>
+        <span>Genres</span>
+        <span>/</span>
+        <span className="text-indigo-400 font-semibold">Aggregates</span>
+      </nav>
+
+      {/* Header */}
+      <div className="border-b border-neutral-800 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Genre Aggregates
+            </span>
+          </h1>
+          <p className="text-neutral-400 mt-1.5 text-sm max-w-3xl">
+            Filter and analyze anime counts, average scores, popularity, and trending metrics across anime genres by season and format.
+          </p>
+        </div>
+
+        <Link
+          href="/seasonal/genres/genre-animes"
+          className="inline-flex items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2 text-xs font-semibold text-neutral-300 hover:text-white hover:border-neutral-600 transition shrink-0"
+        >
+          <span>Switch to Genre Animes &rarr;</span>
+        </Link>
       </div>
 
       {/* Controls Form */}
@@ -67,7 +95,7 @@ export default function GenreDataPage() {
               id="genre-data-season-select"
               value={seasonInput}
               onChange={(e) => setSeasonInput(e.target.value as Season)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
             >
               {SEASONS.map((s) => (
                 <option key={s} value={s}>
@@ -90,7 +118,7 @@ export default function GenreDataPage() {
                 const val = e.target.value ? parseInt(e.target.value, 10) : 0;
                 setSeasonYearInput(isNaN(val) ? 0 : val);
               }}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition"
             />
           </div>
 
@@ -102,7 +130,7 @@ export default function GenreDataPage() {
               id="genre-data-format-select"
               value={formatInput}
               onChange={(e) => setFormatInput(e.target.value as MediaFormat)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
+              className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
             >
               {FORMATS.map((f) => (
                 <option key={f} value={f}>
@@ -118,7 +146,7 @@ export default function GenreDataPage() {
             id="submit-genre-data-filters"
             type="submit"
             disabled={!canSubmit}
-            className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
+            className="rounded-lg bg-indigo-600 px-6 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150 cursor-pointer"
           >
             Submit Filters
           </button>

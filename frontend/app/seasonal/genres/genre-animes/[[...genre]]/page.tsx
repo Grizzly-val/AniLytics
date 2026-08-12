@@ -37,7 +37,7 @@ interface EnrichedAnime extends ProcessedAnime {
   searchHaystack: string;
 }
 
-export default function GenreDetailPage({ params }: PageProps) {
+export default function GenreAnimesPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const rawGenre = resolvedParams.genre?.[0];
   const decodedGenreFromPath = rawGenre ? decodeURIComponent(rawGenre) : "";
@@ -270,16 +270,31 @@ export default function GenreDetailPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-xs font-medium text-neutral-400">
+        <Link href="/" className="hover:text-neutral-200 transition">
+          Home
+        </Link>
+        <span>/</span>
+        <Link href="/seasonal" className="hover:text-neutral-200 transition">
+          Seasonal Analytics
+        </Link>
+        <span>/</span>
+        <span>Genres</span>
+        <span>/</span>
+        <span className="text-indigo-400 font-semibold">Genre Animes</span>
+      </nav>
+
       {/* If accessed through a bar click: NO GenreHeader controls, only back link & title badge */}
       {isFromBarClick ? (
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-neutral-800 pb-6">
           <div>
             <Link
-              href="/genre-data"
+              href="/seasonal/genres/aggregates"
               className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition mb-2"
               id="back-to-genre-data-link"
             >
-              &larr; Back to Genre Overview
+              &larr; Back to Genre Aggregates
             </Link>
             <div className="flex items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">

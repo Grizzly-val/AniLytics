@@ -1,9 +1,18 @@
+import { SUBJECTS } from "./subjects";
+
 export interface Dashboard {
   slug: string;
   label: string;
+  path: string;
 }
 
-export const dashboards: Dashboard[] = [
-  { slug: "genre-data", label: "Genre Data" },
-  { slug: "genre-detail", label: "Genre Detail" },
-];
+// Flat export of all dashboards across all subjects and sections for backwards compatibility
+export const dashboards: Dashboard[] = SUBJECTS.flatMap((subject) =>
+  subject.sections.flatMap((section) =>
+    section.dashboards.map((dash) => ({
+      slug: dash.slug,
+      label: dash.title,
+      path: dash.path,
+    }))
+  )
+);
