@@ -26,6 +26,12 @@ interface GenreScoreChartProps {
   onBarClick?: (titleName: string) => void;
 }
 
+const truncateTitle = (title: string, maxLength: number = 30) => {
+  if (!title) return "";
+  if (title.length <= maxLength) return title;
+  return `${title.slice(0, maxLength)}...`;
+};
+
 export const GenreScoreChart = memo(function GenreScoreChart({
   decodedGenre,
   averageScore,
@@ -34,7 +40,7 @@ export const GenreScoreChart = memo(function GenreScoreChart({
 }: GenreScoreChartProps) {
   if (chartData.length === 0) return null;
 
-  const chartHeight = Math.max(260, chartData.length * 36 + 40);
+  const chartHeight = Math.max(280, chartData.length * 36 + 50);
 
   return (
     <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 sm:p-6 shadow-xl backdrop-blur-sm space-y-4">
@@ -57,7 +63,7 @@ export const GenreScoreChart = memo(function GenreScoreChart({
           <BarChart
             layout="vertical"
             data={chartData}
-            margin={{ top: 10, right: 30, left: 20, bottom: 10 }}
+            margin={{ top: 25, right: 30, left: 20, bottom: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#262626" />
             <XAxis
@@ -71,7 +77,8 @@ export const GenreScoreChart = memo(function GenreScoreChart({
               dataKey="name"
               stroke="#737373"
               tick={{ fill: "#e5e5e5", fontSize: 12 }}
-              width={150}
+              tickFormatter={(value: string) => truncateTitle(value, 30)}
+              width={190}
             />
             <Tooltip
               formatter={(value) => [
@@ -95,6 +102,7 @@ export const GenreScoreChart = memo(function GenreScoreChart({
                 fill: "#ec4899",
                 fontSize: 11,
                 position: "top",
+                offset: 8,
               }}
             />
             <Bar
