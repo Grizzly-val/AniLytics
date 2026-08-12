@@ -1,19 +1,16 @@
-2026-08-12 15:22:58,671 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:26:21,658 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:26:41,783 - src.tools.logger - INFO - Fetched 42 anime entries for season Season.spring 2026 with format MediaFormat.tv.
-2026-08-12 15:26:56,211 - src.tools.logger - INFO - Fetched 2 anime entries for season Season.spring 2021 with format MediaFormat.movie.
-2026-08-12 15:27:17,664 - src.tools.logger - INFO - Fetched 20 anime entries for season Season.spring 2021 with format MediaFormat.tv.
-2026-08-12 15:33:57,991 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:35:09,673 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:37:00,540 - src.tools.logger - INFO - Fetched 3 anime entries for season Season.summer 2026 with format MediaFormat.movie.
-2026-08-12 15:48:33,823 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:50:30,745 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:54:53,629 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 15:56:38,836 - src.tools.logger - INFO - Fetched 23 anime entries for season Season.summer 2024 with format MediaFormat.tv.
-2026-08-12 16:03:38,017 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
-2026-08-12 16:03:44,980 - src.tools.logger - INFO - Fetched 30 anime entries for season Season.summer 2023 with format MediaFormat.tv.
-2026-08-12 16:03:51,330 - src.tools.logger - INFO - Fetched 0 anime entries for season Season.spring 2023 with format MediaFormat.tv_short.
-2026-08-12 16:04:08,127 - src.tools.logger - INFO - Fetched 30 anime entries for season Season.spring 2023 with format MediaFormat.tv.
-2026-08-12 16:04:35,633 - src.tools.logger - INFO - Fetched 32 anime entries for season Season.winter 2023 with format MediaFormat.tv.
-2026-08-12 16:11:58,964 - src.tools.logger - INFO - Fetched 30 anime entries for season Season.spring 2023 with format MediaFormat.tv.
-2026-08-12 16:29:07,778 - src.tools.logger - INFO - Fetched 51 anime entries for season Season.summer 2026 with format MediaFormat.tv.
+2026-08-12 21:08:45,539 - src.tools.logger - INFO - ...
+2026-08-12 21:08:46,301 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 29, Limit: 30
+2026-08-12 21:08:46,726 - src.tools.logger - INFO - [Request 2 headers]: Headers({'date': 'Wed, 12 Aug 2026 13:09:19 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'server': 'cloudflare', 'nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cache-control': 'no-cache, private', 'x-ratelimit-limit': '30', 'x-ratelimit-remaining': '28', 'set-cookie': 'laravel_session=2z3hbEIuOlAyhPHsoJNBNeQDYKHzf9ZB0JFrdIiK; expires=Thu, 13-Aug-2026 01:09:19 GMT; Max-Age=43200; path=/; httponly', 'x-frame-options': 'SAMEORIGIN', 'x-xss-protection': '1; mode=block', 'x-content-type-options': 'nosniff', 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'Authorization,Accept,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range', 'access-control-expose-headers': 'X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Content-Length, Content-Range', 'cf-cache-status': 'DYNAMIC', 'report-to': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=BAYbvIeD81pzfSEbRWmOHb04SNXK1qy%2FDHIJmhw64s13En9nuqnL7DcaMwKWKS6rd2zrkdnRBQmEHf5TG7fpo4ojkY2uyDu1JE6dgVnSxy7WSHe8L6rcdx%2Bk%2F%2FjNfps9cu7%2Blw%3D%3D"}]}', 'content-encoding': 'gzip', 'cf-ray': 'a29fb6bb7d010504-HKG'})
+2026-08-12 21:08:46,729 - src.tools.logger - INFO - Fetched 49 anime entries for season Season.summer 2026 with format MediaFormat.tv.
+2026-08-12 21:09:02,506 - src.tools.logger - INFO - ...
+2026-08-12 21:09:03,159 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 27, Limit: 30
+2026-08-12 21:09:03,161 - src.tools.logger - INFO - Fetched 22 anime entries for season Season.spring 2022 with format MediaFormat.tv.
+2026-08-12 21:09:10,263 - src.tools.logger - INFO - ...
+2026-08-12 21:09:10,890 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 26, Limit: 30
+2026-08-12 21:09:10,892 - src.tools.logger - INFO - Fetched 19 anime entries for season Season.summer 2022 with format MediaFormat.tv.
+2026-08-12 21:09:17,190 - src.tools.logger - INFO - ...
+2026-08-12 21:09:17,737 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 25, Limit: 30
+2026-08-12 21:09:17,738 - src.tools.logger - INFO - Fetched 2 anime entries for season Season.summer 2022 with format MediaFormat.movie.
+2026-08-12 21:09:28,930 - src.tools.logger - INFO - ...
+2026-08-12 21:09:29,411 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 24, Limit: 30
+2026-08-12 21:09:29,412 - src.tools.logger - INFO - Fetched 11 anime entries for season Season.winter 2019 with format MediaFormat.tv.
