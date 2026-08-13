@@ -2,6 +2,8 @@ from fastapi import Depends, FastAPI
 from contextlib import asynccontextmanager
 import httpx
 
+from redis.asyncio import Redis
+
 from src.dependencies.services import Services
 
 from src.fetch import fetch_anilist
@@ -15,7 +17,10 @@ from src.tools.logger import Logger
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.client = httpx.AsyncClient(timeout=httpx.Timeout(10.0))
+    app.state.redis = Redis(host="localhost", port=6379, db=0)
     app.state.logger = Logger(log_file_path="app.log", log_level="INFO").logger
+    if app.state.redis.ping() and app.state.client and app.state.logger:
+        app.state.logger.info("Application startup: HTTP client, Redis client, and logger initialized.")
     yield
     ...
 
@@ -43,27 +48,27 @@ NOTE:
 async def get_seasonal_genres_data(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
 
     query = """
-query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
-    Page (page: $page, perPage: 50){
-        pageInfo {
-            currentPage
-            hasNextPage
-        }
+            query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
+                Page (page: $page, perPage: 50){
+                    pageInfo {
+                        currentPage
+                        hasNextPage
+                    }
 
-        media (season: $season, seasonYear: $seasonYear, type: ANIME, format: $format, sort: POPULARITY) {
-            genres
-            averageScore
-            popularity
-            trending
-            siteUrl
-            title {
-                english
-                native
-                romaji
+                    media (season: $season, seasonYear: $seasonYear, type: ANIME, format: $format, sort: POPULARITY) {
+                        genres
+                        averageScore
+                        popularity
+                        trending
+                        siteUrl
+                        title {
+                            english
+                            native
+                            romaji
+                        }
+                    }
+                }
             }
-        }
-    }
-}
             """
 
     services.logger.info("...")
