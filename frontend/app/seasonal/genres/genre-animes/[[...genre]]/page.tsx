@@ -2,32 +2,41 @@
 
 import { useState, useEffect, useMemo, use, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import {
   Season,
   MediaFormat,
   GenreAggregateStats,
   AnimeItem,
 } from "@/lib/types";
-import { getPrimaryTitle, getSecondaryTitle, getAnimeDomId, getCurrentSeason, getCurrentYear, DEFAULT_FORMAT } from "@/lib/utils";
-import { GenreHeader } from "@/components/genre-animes/GenreHeader";
-import { GenreKpiCards } from "@/components/genre-animes/GenreKpiCards";
-import { GenreHighlights } from "@/components/genre-animes/GenreHighlights";
 import {
+  getPrimaryTitle,
+  getSecondaryTitle,
+  getAnimeDomId,
+  getCurrentSeason,
+  getCurrentYear,
+  DEFAULT_FORMAT,
+} from "@/lib/utils";
+import {
+  GenreAnimesBreadcrumb,
+  GenreBarClickHeader,
+  GenreHeader,
+  GenreAnimesUnsubmittedState,
+  GenreAnimesLoadingState,
+  GenreAnimesErrorState,
+  GenrePromptState,
+  GenreNoDataState,
+  GenreKpiCards,
+  GenreHighlights,
   GenreScoreChart,
   ScoreChartItem,
-} from "@/components/genre-animes/GenreScoreChart";
-import {
   AnimeListControls,
   SortByOption,
   SortOrderOption,
   ViewModeOption,
-} from "@/components/genre-animes/AnimeListControls";
-import {
   AnimeGrid,
   ProcessedAnime,
-} from "@/components/genre-animes/AnimeGrid";
-import { AnimeTable } from "@/components/genre-animes/AnimeTable";
+  AnimeTable,
+} from "@/components/genre-animes";
 import { useGenreAnimes } from "@/lib/hooks/useGenreData";
 
 interface PageProps {
@@ -286,51 +295,17 @@ export default function GenreAnimesPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs font-medium text-neutral-400">
-        <Link href="/" className="hover:text-neutral-200 transition">
-          Home
-        </Link>
-        <span>/</span>
-        <Link href="/seasonal" className="hover:text-neutral-200 transition">
-          Seasonal Analytics
-        </Link>
-        <span>/</span>
-        <span>Genres</span>
-        <span>/</span>
-        <span className="text-indigo-400 font-semibold">Genre Animes</span>
-      </nav>
+      <GenreAnimesBreadcrumb />
 
-      {/* If accessed through a bar click: NO GenreHeader controls, only back link & title badge */}
+      {/* Header controls or simple header */}
       {isFromBarClick ? (
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-neutral-800 pb-6">
-          <div>
-            <Link
-              href="/seasonal/genres/aggregates"
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition mb-2"
-              id="back-to-genre-data-link"
-            >
-              &larr; Back to Genre Aggregates
-            </Link>
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {activeGenreName || "Genre Animes"}
-                </span>
-              </h1>
-              {activeSeason && activeYear && activeFormat && (
-                <span className="rounded-full bg-neutral-800 px-3 py-1 text-xs font-semibold text-neutral-300 border border-neutral-700">
-                  {activeSeason} {activeYear} • {activeFormat}
-                </span>
-              )}
-            </div>
-            <p className="text-neutral-400 text-sm mt-1">
-              Detailed breakdown and performance analytics for {activeGenreName || "the selected"} anime genre.
-            </p>
-          </div>
-        </div>
+        <GenreBarClickHeader
+          activeGenreName={activeGenreName}
+          activeSeason={activeSeason}
+          activeYear={activeYear}
+          activeFormat={activeFormat}
+        />
       ) : (
-        /* Direct access: GenreHeader is available to configure Season, Year, Format & Load Genres */
         <GenreHeader
           decodedGenre={decodedGenreFromPath}
           selectedGenre={selectedGenre}
@@ -352,66 +327,33 @@ export default function GenreAnimesPage({ params }: PageProps) {
       )}
 
       {/* Unsubmitted / Pending State */}
-      {!isSubmitted && (
-        <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-12 text-center space-y-3">
-          <div className="text-4xl">📊</div>
-          <h3 className="text-lg font-semibold text-white">
-            Load Genres to View Analytics
-          </h3>
-          <p className="text-neutral-400 text-sm max-w-md mx-auto">
-            Please configure Season, Year, and Format above, then click &quot;Load Genres&quot; to fetch available genres and view detailed analytics.
-          </p>
-        </div>
-      )}
+      {!isSubmitted && <GenreAnimesUnsubmittedState />}
 
       {/* Loading State */}
-      {isSubmitted && loading && (
-        <div className="flex flex-col items-center justify-center h-64 rounded-xl border border-neutral-800 bg-neutral-900/40 p-8 space-y-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent" />
-          <p className="text-neutral-400 text-sm animate-pulse">
-            Fetching available genres...
-          </p>
-        </div>
-      )}
+      {isSubmitted && loading && <GenreAnimesLoadingState />}
 
       {/* Error State */}
       {isSubmitted && apiError && !loading && (
-        <div className="rounded-xl border border-red-500/30 bg-red-950/20 p-6 text-red-400 space-y-2">
-          <h3 className="font-semibold text-lg">Error loading genre details</h3>
-          <p className="text-sm text-red-300/80">{apiError}</p>
-        </div>
+        <GenreAnimesErrorState apiError={apiError} />
       )}
 
       {/* Main Content */}
       {isSubmitted && !loading && !apiError && (
         <>
           {!selectedGenre ? (
-            /* State B: Genres loaded but no genre selected */
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-10 text-center">
-              <div className="mb-4 flex justify-center">
-                <span className="rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-indigo-300">
-                  {availableGenres.length} loaded genres
-                </span>
-              </div>
-              <div className="text-4xl">📺</div>
-              <h3 className="mt-4 text-xl font-semibold text-white">
-                Choose a genre
-              </h3>
-              <p className="mx-auto mt-2 max-w-md text-sm text-neutral-400">
-                {availableGenres.length} genres are ready for {activeSeason} {activeYear} · {activeFormat}. Pick one to view the detailed analytics.
-              </p>
-            </div>
+            <GenrePromptState
+              availableGenresCount={availableGenres.length}
+              activeSeason={activeSeason as Season}
+              activeYear={activeYear as number}
+              activeFormat={activeFormat as MediaFormat}
+            />
           ) : !genreStats ? (
-            /* Selected genre has no data */
-            <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-12 text-center space-y-4">
-              <div className="text-4xl">📊</div>
-              <h3 className="text-xl font-semibold text-white">
-                No data for &quot;{activeGenreName || "selected genre"}&quot;
-              </h3>
-              <p className="text-neutral-400 text-sm max-w-md mx-auto">
-                No anime matching the genre &quot;{activeGenreName}&quot; were found in the selected {activeSeason} {activeYear} ({activeFormat}) dataset. Try adjusting your filters and clicking Load Genres.
-              </p>
-            </div>
+            <GenreNoDataState
+              activeGenreName={activeGenreName}
+              activeSeason={activeSeason as Season}
+              activeYear={activeYear as number}
+              activeFormat={activeFormat as MediaFormat}
+            />
           ) : (
             <>
               {/* KPI Cards */}

@@ -35,7 +35,7 @@ export function useGenreAggregates(
       }).toString()
     : "";
 
-  const key = shouldFetch ? `/api/seasonal_genres/aggregates?${queryParams}` : null;
+  const key = shouldFetch ? `/api/seasonal/genres/aggregates?${queryParams}` : null;
 
   const { data, error, isLoading } = useSWR<GenreAggregatesResponse>(key, fetcher, {
     revalidateIfStale: false,
@@ -70,7 +70,7 @@ export function useGenreAnimes(
       }).toString()
     : "";
 
-  const key = shouldFetch ? `/api/seasonal_genres/animes?${queryParams}` : null;
+  const key = shouldFetch ? `/api/seasonal/genres/animes?${queryParams}` : null;
 
   const { data, error, isLoading } = useSWR<GenreAnimesResponse>(key, fetcher, {
     revalidateIfStale: false,

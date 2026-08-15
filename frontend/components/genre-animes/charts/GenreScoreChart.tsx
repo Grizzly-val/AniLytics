@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -38,6 +38,25 @@ export const GenreScoreChart = memo(function GenreScoreChart({
   chartData,
   onBarClick,
 }: GenreScoreChartProps) {
+  const handleBarClick = useCallback(
+    (data: any) => {
+      if (data && data.name && onBarClick) {
+        onBarClick(data.name);
+      }
+    },
+    [onBarClick]
+  );
+
+  const tooltipFormatter = useCallback(
+    (value: any) => [value != null ? `${value} / 100` : "N/A", "Score"],
+    []
+  );
+
+  const tooltipLabelFormatter = useCallback(
+    (label: any) => `Title: ${label} (Click bar to locate)`,
+    []
+  );
+
   if (chartData.length === 0) return null;
 
   const chartHeight = Math.max(280, chartData.length * 36 + 50);
@@ -81,11 +100,8 @@ export const GenreScoreChart = memo(function GenreScoreChart({
               width={190}
             />
             <Tooltip
-              formatter={(value) => [
-                value != null ? `${value} / 100` : "N/A",
-                "Score",
-              ]}
-              labelFormatter={(label) => `Title: ${label} (Click bar to locate)`}
+              formatter={tooltipFormatter}
+              labelFormatter={tooltipLabelFormatter}
               contentStyle={{
                 backgroundColor: "#171717",
                 borderColor: "#404040",
@@ -111,11 +127,8 @@ export const GenreScoreChart = memo(function GenreScoreChart({
               fill="#6366f1"
               radius={[0, 4, 4, 0]}
               cursor="pointer"
-              onClick={(data) => {
-                if (data && data.name && onBarClick) {
-                  onBarClick(data.name);
-                }
-              }}
+              animationDuration={300}
+              onClick={handleBarClick}
             />
           </BarChart>
         </ResponsiveContainer>

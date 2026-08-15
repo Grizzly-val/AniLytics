@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { ProcessedAnime } from "./AnimeGrid";
 import { getAnimeDomId } from "@/lib/utils";
+import { ScrollReveal } from "@/components/common/ScrollReveal";
 
 interface AnimeTableProps {
   items: ProcessedAnime[];
@@ -32,9 +33,13 @@ export const AnimeTable = memo(function AnimeTable({
             const domId = getAnimeDomId(item.primaryTitle);
 
             return (
-              <tr
+              <ScrollReveal
+                as="tr"
                 key={item.anime.siteUrl || idx}
                 id={domId}
+                direction="up"
+                delay={(idx % 10) * 40}
+                duration={400}
                 className={`transition-all duration-300 ${
                   isHighlighted
                     ? "bg-indigo-950/70 border-l-4 border-l-indigo-500 font-semibold"
@@ -71,7 +76,7 @@ export const AnimeTable = memo(function AnimeTable({
                     AniList ↗
                   </a>
                 </td>
-              </tr>
+              </ScrollReveal>
             );
           })}
         </tbody>

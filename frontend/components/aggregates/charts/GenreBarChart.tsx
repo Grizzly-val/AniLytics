@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   ResponsiveContainer,
@@ -22,7 +22,7 @@ interface GenreBarChartProps {
   format?: MediaFormat;
 }
 
-export default function GenreBarChart({
+export default memo(function GenreBarChart({
   data,
   metric,
   onMetricChange,
@@ -32,20 +32,23 @@ export default function GenreBarChart({
 }: GenreBarChartProps) {
   const router = useRouter();
 
-  const handleBarClick = (entry: any) => {
-    if (entry && entry.genre) {
-      const queryParams = new URLSearchParams();
-      if (season) queryParams.set("season", season);
-      if (seasonYear) queryParams.set("seasonYear", seasonYear.toString());
-      if (format) queryParams.set("format", format);
-      queryParams.set("fromBarClick", "true");
+  const handleBarClick = useCallback(
+    (entry: any) => {
+      if (entry && entry.genre) {
+        const queryParams = new URLSearchParams();
+        if (season) queryParams.set("season", season);
+        if (seasonYear) queryParams.set("seasonYear", seasonYear.toString());
+        if (format) queryParams.set("format", format);
+        queryParams.set("fromBarClick", "true");
 
-      const queryString = queryParams.toString();
-      router.push(
-        `/seasonal/genres/genre-animes/${encodeURIComponent(entry.genre)}?${queryString}`
-      );
-    }
-  };
+        const queryString = queryParams.toString();
+        router.push(
+          `/seasonal/genres/genre-animes/${encodeURIComponent(entry.genre)}?${queryString}`
+        );
+      }
+    },
+    [season, seasonYear, format, router]
+  );
 
   const metricConfig = useMemo(() => {
     switch (metric) {
@@ -103,6 +106,16 @@ export default function GenreBarChart({
       })
       .sort((a, b) => b.value - a.value);
   }, [data, metric]);
+
+  const tooltipFormatter = useCallback(
+    (value: any) => [
+      typeof value === "number" ? metricConfig.format(value) : String(value ?? 0),
+      metricConfig.label,
+    ],
+    [metricConfig]
+  );
+
+  const tooltipLabelFormatter = useCallback((label: any) => `Genre: ${label}`, []);
 
   if (chartData.length === 0) {
     return (
@@ -164,11 +177,8 @@ export default function GenreBarChart({
               width={110}
             />
             <Tooltip
-              formatter={(value: any) => [
-                typeof value === "number" ? metricConfig.format(value) : String(value ?? 0),
-                metricConfig.label,
-              ]}
-              labelFormatter={(label) => `Genre: ${label}`}
+              formatter={tooltipFormatter}
+              labelFormatter={tooltipLabelFormatter}
               contentStyle={{
                 backgroundColor: "#171717",
                 borderColor: "#404040",
@@ -184,6 +194,7 @@ export default function GenreBarChart({
               fill={metricConfig.color}
               radius={[0, 4, 4, 0]}
               cursor="pointer"
+              animationDuration={300}
               onClick={handleBarClick}
             />
           </BarChart>
@@ -191,4 +202,4 @@ export default function GenreBarChart({
       </div>
     </div>
   );
-}
+});
