@@ -44,7 +44,7 @@ export const GenreHeader = memo(function GenreHeader({
 }: GenreHeaderProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const currentGenreName = selectedGenre || "Genre Detail";
+  const currentGenreName = selectedGenre || "Genre Animes";
 
   const handleLoadGenresClick = () => {
     // Input validation
@@ -114,7 +114,7 @@ export const GenreHeader = memo(function GenreHeader({
               Season
             </label>
             <select
-              id="genre-detail-season-select"
+              id="genre-animes-season-select"
               value={season}
               onChange={(e) => {
                 setValidationError(null);
@@ -135,7 +135,7 @@ export const GenreHeader = memo(function GenreHeader({
               Year
             </label>
             <input
-              id="genre-detail-year-input"
+              id="genre-animes-year-input"
               type="number"
               placeholder="e.g. 2026"
               value={seasonYear || ""}
@@ -153,7 +153,7 @@ export const GenreHeader = memo(function GenreHeader({
               Format
             </label>
             <select
-              id="genre-detail-format-select"
+              id="genre-animes-format-select"
               value={format}
               onChange={(e) => {
                 setValidationError(null);
@@ -175,7 +175,7 @@ export const GenreHeader = memo(function GenreHeader({
             </label>
             {hasLoadedGenres && availableGenres && availableGenres.length > 0 ? (
               <select
-                id="genre-detail-genre-select"
+                id="genre-animes-genre-select"
                 value={selectedGenre || ""}
                 onChange={(e) => onGenreChange?.(e.target.value)}
                 className="w-full h-[38px] rounded-lg border border-neutral-700 bg-neutral-800 px-3 text-xs text-white focus:border-indigo-500 focus:outline-none transition cursor-pointer"

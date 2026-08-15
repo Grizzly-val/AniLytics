@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     });
 
     const response = await fetch(
-      `${backendUrl}/seasonal_genres?${query.toString()}`,
+      `${backendUrl}/seasonal_genres/aggregates?${query.toString()}`,
       {
         cache: "no-store",
       }

@@ -1,0 +1,50 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const season = searchParams.get("season");
+  const seasonYear = searchParams.get("seasonYear");
+  const format = searchParams.get("format");
+
+  if (!season || !seasonYear || !format) {
+    return NextResponse.json(
+      {
+        error:
+          "Missing required query parameters: season, seasonYear, and format are all required.",
+      },
+      { status: 400 }
+    );
+  }
+
+  const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
+
+  try {
+    const query = new URLSearchParams({
+      season,
+      seasonYear,
+      format,
+    });
+
+    const response = await fetch(
+      `${backendUrl}/seasonal_genres/animes?${query.toString()}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: `Upstream service error (HTTP ${response.status})` },
+        { status: response.status >= 400 && response.status < 600 ? response.status : 500 }
+      );
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to connect to backend service" },
+      { status: 500 }
+    );
+  }
+}

@@ -1,10 +1,10 @@
 "use client";
 
 import { memo } from "react";
-import { GenreStats, Season, MediaFormat } from "@/lib/types";
+import { GenreAggregateStats, Season, MediaFormat } from "@/lib/types";
 
 interface GenreKpiCardsProps {
-  stats: GenreStats;
+  stats: GenreAggregateStats;
   season: Season;
   seasonYear: number;
   format: MediaFormat;

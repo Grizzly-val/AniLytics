@@ -11,10 +11,10 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import { Season, MediaFormat, GenreDataResponse } from "@/lib/types";
+import { Season, MediaFormat, GenreAggregatesResponse } from "@/lib/types";
 
 interface GenreBarChartProps {
-  data: GenreDataResponse;
+  data: GenreAggregatesResponse;
   metric: "count" | "average_score" | "trending" | "popularity";
   onMetricChange?: (metric: "count" | "average_score" | "trending" | "popularity") => void;
   season?: Season;
