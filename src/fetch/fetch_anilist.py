@@ -26,7 +26,7 @@ async def get_anime_data(query: str, variables: dict, client: httpx.AsyncClient,
             result = await client.post(url=URL, json={"query": query, "variables": variables})
             result.raise_for_status()
 
-            logger.info(f"[Request {page} headers]: {result.headers}")
+            logger.info(f"[Request 1 headers]: Remaining: {result.headers.get("x-ratelimit-remaining")}, Limit: {result.headers.get("x-ratelimit-limit")}")
 
             data = result.json()
 

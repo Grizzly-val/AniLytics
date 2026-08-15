@@ -1,9 +1,13 @@
+import ast
+import json
+
 from fastapi import Depends, FastAPI
 from contextlib import asynccontextmanager
 import httpx
 
 from redis.asyncio import Redis
 
+from src.core import get_seasonal_genres_data
 from src.dependencies.services import Services
 
 from src.fetch import fetch_anilist
@@ -17,13 +21,17 @@ from src.tools.logger import Logger
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.state.client = httpx.AsyncClient(timeout=httpx.Timeout(10.0))
-    app.state.redis = Redis(host="localhost", port=6379, db=0)
+    app.state.redis = Redis(host="localhost", port=6379, db=0, decode_responses=True)
     app.state.logger = Logger(log_file_path="app.log", log_level="INFO").logger
-    if app.state.redis.ping() and app.state.client and app.state.logger:
+
+    if await app.state.redis.ping() and app.state.client and app.state.logger:
         app.state.logger.info("Application startup: HTTP client, Redis client, and logger initialized.")
     yield
     ...
-
+    if app.state.redis:
+        await app.state.redis.close()
+    if app.state.client:
+        await app.state.client.aclose()
 
 
 # ----------------
@@ -41,86 +49,24 @@ NOTE:
 """
 
 
+@app.get("/seasonal_genres/aggregates")
+async def get_seasonal_genres_aggregates(season: Season, seasonYear: int, format: MediaFormat, services: Services = Depends(Services)) -> dict:
+    cached_data = await services.redis.get(f"seasonal_genres:aggregates:{season}:{seasonYear}:{format}")
+    if cached_data:
+        services.logger.info(f"Retrieved cached data for seasonal genres aggregates for season {season} {seasonYear} with format {format}.")
+        return json.loads(cached_data)
+        
+    else:
+        data = await get_seasonal_genres_data(season, seasonYear, format, services)
+        return data.get("aggregates", {})
 
 
-
-@app.get("/seasonal_genres")
-async def get_seasonal_genres_data(season: Season, seasonYear: int, format: MediaFormat, services = Depends(Services)) -> dict:
-
-    query = """
-            query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
-                Page (page: $page, perPage: 50){
-                    pageInfo {
-                        currentPage
-                        hasNextPage
-                    }
-
-                    media (season: $season, seasonYear: $seasonYear, type: ANIME, format: $format, sort: POPULARITY) {
-                        genres
-                        averageScore
-                        popularity
-                        trending
-                        siteUrl
-                        title {
-                            english
-                            native
-                            romaji
-                        }
-                    }
-                }
-            }
-            """
-
-    services.logger.info("...")
-    json_variables = {"currentPage": 1, "season": season, "seasonYear": seasonYear, "format": format}
-    
-    data = await fetch_anilist.get_anime_data(query=query, variables=json_variables, client=services.client, logger=services.logger)
-    
-    clean_data = [
-        anime for anime in data
-        if anime["averageScore"] and 
-        anime["popularity"] and 
-        anime["trending"] and 
-        anime["genres"] and 
-        anime["siteUrl"] and 
-        anime["title"]
-    ]
-    
-    genre_data = {}
-    genre_totals = {}
-
-    for anime in clean_data:
-        score = anime["averageScore"]
-        popularity = anime["popularity"]
-        trending = anime["trending"]
-
-        for genre in anime["genres"]:
-            if genre_totals.get(genre, None) is None:
-                genre_totals[genre] = {"total_score": 0, "total_popularity": 0, "total_trending": 0}
-            if genre_data.get(genre, None) is None:
-                genre_data[genre] = {"count": 0, "average_score": 0, "average_popularity": 0, "average_trending": 0, "animes": []}
-
-
-            genre_data[genre]["count"]                    += 1
-
-            genre_data[genre]["animes"].append({
-                "title": anime["title"],
-                "score": score,
-                "popularity": popularity,
-                "trending": trending,
-                "siteUrl": anime["siteUrl"]
-            })
-
-            genre_totals[genre]["total_score"]            += score
-            genre_totals[genre]["total_popularity"]       += popularity
-            genre_totals[genre]["total_trending"]         += trending
-
-            genre_data[genre]["average_score"]          =  genre_totals[genre]["total_score"] / genre_data[genre]["count"]
-            genre_data[genre]["average_popularity"]     =  genre_totals[genre]["total_popularity"] / genre_data[genre]["count"]
-            genre_data[genre]["average_trending"]       =  genre_totals[genre]["total_trending"] / genre_data[genre]["count"]
-
-
-    services.logger.info(f"Fetched {len(clean_data)} anime entries for season {season} {seasonYear} with format {format}.")
-
-
-    return  genre_data
+@app.get("/seasonal_genres/animes")
+async def get_seasonal_genres_animes(season: Season, seasonYear: int, format: MediaFormat, services: Services = Depends(Services)) -> dict:
+    cached_data = await services.redis.get(f"seasonal_genres:anime_list:{season}:{seasonYear}:{format}")
+    if cached_data:
+        services.logger.info(f"Retrieved cached data for seasonal genres animes for season {season} {seasonYear} with format {format}.")
+        return json.loads(cached_data)
+    else:
+        data = await get_seasonal_genres_data(season, seasonYear, format, services)
+        return data.get("animes", {})
