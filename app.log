@@ -1,6 +1,0 @@
-2026-08-15 20:35:22,115 - src.tools.logger - INFO - Application startup: HTTP client, Redis client, and logger initialized.
-2026-08-15 20:35:28,524 - src.tools.logger - INFO - ...
-2026-08-15 20:35:29,257 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 29, Limit: 30
-2026-08-15 20:35:29,633 - src.tools.logger - INFO - [Request 1 headers]: Remaining: 28, Limit: 30
-2026-08-15 20:35:29,633 - src.tools.logger - INFO - Fetched 33 anime entries for season Season.summer 2025 with format MediaFormat.tv.
-2026-08-15 20:35:29,679 - src.tools.logger - INFO - Cached KEY: seasonal_genres:Season.summer:2025:MediaFormat.tv in Redis.
