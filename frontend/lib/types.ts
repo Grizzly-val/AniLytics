@@ -23,16 +23,20 @@ export interface AnimeItem {
   siteUrl: string;
 }
 
-export interface GenreStats {
+export interface GenreAggregateStats {
   count: number;
   average_score: number;
   average_popularity: number;
   average_trending: number;
-  animes: AnimeItem[];
-  total_score?: number;
-  total_popularity?: number;
-  total_trending?: number;
 }
 
-export type GenreDataResponse = Record<string, GenreStats>;
+export type GenreAggregatesResponse = Record<string, GenreAggregateStats>;
 
+export type GenreAnimesResponse = Record<string, AnimeItem[]>;
+
+// Deprecated unified interface kept for compatibility
+export interface GenreStats extends GenreAggregateStats {
+  animes?: AnimeItem[];
+}
+
+export type GenreDataResponse = GenreAggregatesResponse;

@@ -6,28 +6,29 @@ import Link from "next/link";
 import {
   Season,
   MediaFormat,
-  GenreStats,
+  GenreAggregateStats,
+  AnimeItem,
 } from "@/lib/types";
 import { getPrimaryTitle, getSecondaryTitle, getAnimeDomId, getCurrentSeason, getCurrentYear, DEFAULT_FORMAT } from "@/lib/utils";
-import { GenreHeader } from "@/components/genre-detail/GenreHeader";
-import { GenreKpiCards } from "@/components/genre-detail/GenreKpiCards";
-import { GenreHighlights } from "@/components/genre-detail/GenreHighlights";
+import { GenreHeader } from "@/components/genre-animes/GenreHeader";
+import { GenreKpiCards } from "@/components/genre-animes/GenreKpiCards";
+import { GenreHighlights } from "@/components/genre-animes/GenreHighlights";
 import {
   GenreScoreChart,
   ScoreChartItem,
-} from "@/components/genre-detail/GenreScoreChart";
+} from "@/components/genre-animes/GenreScoreChart";
 import {
   AnimeListControls,
   SortByOption,
   SortOrderOption,
   ViewModeOption,
-} from "@/components/genre-detail/AnimeListControls";
+} from "@/components/genre-animes/AnimeListControls";
 import {
   AnimeGrid,
   ProcessedAnime,
-} from "@/components/genre-detail/AnimeGrid";
-import { AnimeTable } from "@/components/genre-detail/AnimeTable";
-import { useGenreData } from "@/lib/hooks/useGenreData";
+} from "@/components/genre-animes/AnimeGrid";
+import { AnimeTable } from "@/components/genre-animes/AnimeTable";
+import { useGenreAnimes } from "@/lib/hooks/useGenreData";
 
 interface PageProps {
   params: Promise<{ genre?: string[] }>;
@@ -74,7 +75,7 @@ export default function GenreAnimesPage({ params }: PageProps) {
     decodedGenreFromPath
   );
 
-  const { data, error, loading } = useGenreData(
+  const { data, error, loading } = useGenreAnimes(
     activeSeason,
     activeYear,
     activeFormat,
@@ -89,7 +90,7 @@ export default function GenreAnimesPage({ params }: PageProps) {
   const [highlightedTitle, setHighlightedTitle] = useState<string | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Available genres from data
+  // Available genres from backend animes data
   const availableGenres = useMemo(() => {
     if (!data) return [];
     return Object.keys(data).sort();
@@ -153,21 +154,36 @@ export default function GenreAnimesPage({ params }: PageProps) {
     return null;
   }, [error, isSubmitted, loading, data, activeSeason, activeYear, activeFormat]);
 
-  // Find exact or case-insensitive genre match
-  const genreStats: GenreStats | null = useMemo(() => {
-    if (!data || !activeGenreName) return null;
+  // Get anime items list for selected genre
+  const genreAnimes: AnimeItem[] = useMemo(() => {
+    if (!data || !activeGenreName) return [];
     if (data[activeGenreName]) return data[activeGenreName];
     const key = Object.keys(data).find(
       (k) => k.toLowerCase() === activeGenreName.toLowerCase()
     );
-    return key ? data[key] : null;
+    return key ? data[key] : [];
   }, [data, activeGenreName]);
+
+  // Dynamically aggregate stats for selected genre
+  const genreStats: GenreAggregateStats | null = useMemo(() => {
+    if (genreAnimes.length === 0) return null;
+    const count = genreAnimes.length;
+    const totalScore = genreAnimes.reduce((sum, a) => sum + (a.score || 0), 0);
+    const totalPop = genreAnimes.reduce((sum, a) => sum + (a.popularity || 0), 0);
+    const totalTrend = genreAnimes.reduce((sum, a) => sum + (a.trending || 0), 0);
+    return {
+      count,
+      average_score: totalScore / count,
+      average_popularity: totalPop / count,
+      average_trending: totalTrend / count,
+    };
+  }, [genreAnimes]);
 
   // Pre-process anime items
   const enrichedAnimes: EnrichedAnime[] = useMemo(() => {
-    if (!genreStats || !genreStats.animes) return [];
+    if (genreAnimes.length === 0) return [];
 
-    return genreStats.animes.map((anime) => {
+    return genreAnimes.map((anime) => {
       const primaryTitle = getPrimaryTitle(anime.title);
       const secondaryTitle = getSecondaryTitle(anime.title);
       const eng = anime.title?.english?.toLowerCase() || "";
@@ -182,7 +198,7 @@ export default function GenreAnimesPage({ params }: PageProps) {
         searchHaystack,
       };
     });
-  }, [genreStats]);
+  }, [genreAnimes]);
 
   // Highlights and chart data
   const { topScoredAnime, mostPopularAnime, chartData } = useMemo(() => {
@@ -299,7 +315,7 @@ export default function GenreAnimesPage({ params }: PageProps) {
             <div className="flex items-center gap-3">
               <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
                 <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {activeGenreName || "Genre Detail"}
+                  {activeGenreName || "Genre Animes"}
                 </span>
               </h1>
               {activeSeason && activeYear && activeFormat && (

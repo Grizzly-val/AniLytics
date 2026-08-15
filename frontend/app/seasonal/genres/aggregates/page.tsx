@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Season, MediaFormat } from "@/lib/types";
 import GenreBarChart from "@/components/charts/GenreBarChart";
-import { useGenreData } from "@/lib/hooks/useGenreData";
+import { useGenreAggregates } from "@/lib/hooks/useGenreData";
 import { SEASONS, FORMATS, getCurrentSeason, getCurrentYear, DEFAULT_FORMAT } from "@/lib/utils";
 
 export default function GenreAggregatesPage() {
@@ -34,7 +34,7 @@ export default function GenreAggregatesPage() {
     }
   };
 
-  const { data, error, loading } = useGenreData(
+  const { data, error, loading } = useGenreAggregates(
     activeSeason,
     activeYear,
     activeFormat,
