@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { AnimeItem } from "@/lib/types";
+import { getScoreStyle, getAnimeBannerImage, ANIME_PLACEHOLDER_BANNER } from "@/lib/utils";
 import { ScrollReveal } from "@/components/common/ScrollReveal";
 
 interface GenreHighlightsProps {
@@ -16,75 +17,149 @@ export const GenreHighlights = memo(function GenreHighlights({
   if (!topScoredAnime && !mostPopularAnime) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] mb-9">
+      {/* 1. Top Performer / Highest Scored */}
       {topScoredAnime && (
-        <ScrollReveal direction="up" delay={0} duration={500}>
-          <div className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-neutral-900/50 p-5 relative overflow-hidden h-full">
-            <div className="absolute top-3 right-3 text-xs uppercase font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/30 px-2.5 py-1 rounded-full">
-              Highest Scored
+        <ScrollReveal direction="up" delay={200} duration={500}>
+          <div className="group rounded-2xl border border-[var(--line)] border-t-2 border-t-[rgba(115,210,150,0.34)] bg-gradient-to-br from-[rgba(92,188,124,0.055)] to-[var(--panel)] p-[18px_20px_20px] relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(115,210,150,0.46)] hover:shadow-[0_18px_45px_-28px_rgba(72,187,117,0.22)]">
+            <div className="h-[132px] -mx-5 -mt-[18px] mb-[18px] relative overflow-hidden bg-[var(--panel-2)] border-b border-[var(--line-soft)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={getAnimeBannerImage(topScoredAnime.anime)}
+                alt={`${topScoredAnime.primaryTitle} banner`}
+                onError={(e) => {
+                  if (e.currentTarget.src !== ANIME_PLACEHOLDER_BANNER) {
+                    e.currentTarget.src = ANIME_PLACEHOLDER_BANNER;
+                  }
+                }}
+                className="w-full h-full object-cover object-center saturate-[0.88] contrast-[0.96] opacity-78 scale-[1.015] transition-all duration-700 ease-[cubic-bezier(.65,0,.35,1)] group-hover:scale-[1.045] group-hover:opacity-92 group-hover:saturate-100 group-hover:contrast-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,7,12,0.08)] via-[rgba(8,7,12,0.12)] to-[rgba(19,16,25,0.96)] pointer-events-none" />
+              <span className="absolute left-4 bottom-3.25 z-10 font-mono text-[9px] tracking-[0.08em] uppercase text-[rgba(244,242,248,0.64)]">
+                banner / preview
+              </span>
             </div>
-            <p className="text-xs text-neutral-400 uppercase font-medium">Top Performer</p>
-            <h3 className="text-lg sm:text-xl font-bold text-white mt-1 line-clamp-1">
+
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="font-mono text-[10.5px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Top Performer
+              </span>
+              <span className="font-mono text-[10.5px] tracking-[0.06em] uppercase text-[rgba(125,218,158,0.86)]">
+                Highest Scored
+              </span>
+            </div>
+
+            <h3 className="font-display font-medium text-[19px] text-[var(--text-hi)] mb-1 line-clamp-1">
               {topScoredAnime.primaryTitle}
             </h3>
-            {topScoredAnime.secondaryTitle && (
-              <p className="text-xs text-neutral-400 line-clamp-1 font-normal">
-                {topScoredAnime.secondaryTitle}
-              </p>
-            )}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-emerald-400 font-bold">
-                  ★ {topScoredAnime.anime.score}
+            <p className="text-[12.5px] text-[var(--text-low)] mb-[18px] line-clamp-1">
+              {topScoredAnime.secondaryTitle || "\u00A0"}
+            </p>
+
+            <div className="flex items-center justify-between pt-4 border-t border-[var(--line-soft)]">
+              <div className="flex items-center gap-4 font-mono text-xs text-[var(--text-mid)]">
+                <span className="flex items-center gap-1.25">
+                  <svg viewBox="0 0 24 24" fill="#d8c48a" stroke="none" className="w-[12.5px] h-[12.5px]">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  <span style={{ color: getScoreStyle(topScoredAnime.anime.score) }}>
+                    {topScoredAnime.anime.score}
+                  </span>
                 </span>
-                <span className="text-neutral-400">
-                  👥 {topScoredAnime.anime.popularity.toLocaleString()}
+                <span className="flex items-center gap-1.25">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#93b9f2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[12.5px] h-[12.5px]">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                  </svg>
+                  <span>{topScoredAnime.anime.popularity.toLocaleString("en-US")}</span>
                 </span>
               </div>
+
               <a
                 href={topScoredAnime.anime.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-purple-200 transition"
+                className="flex items-center gap-1.5 font-medium text-[12.5px] text-[var(--purple-300)] group-hover:gap-2.25 transition-all"
               >
-                View on AniList &rarr;
+                <span>View on AniList</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                  <path d="M7 17 17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
               </a>
             </div>
           </div>
         </ScrollReveal>
       )}
 
+      {/* 2. Fan Favorite / Most Popular */}
       {mostPopularAnime && (
-        <ScrollReveal direction="up" delay={100} duration={500}>
-          <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/40 to-neutral-900/50 p-5 relative overflow-hidden h-full">
-            <div className="absolute top-3 right-3 text-xs uppercase font-semibold text-indigo-300 bg-indigo-500/10 border border-indigo-500/30 px-2.5 py-1 rounded-full">
-              Most Popular
+        <ScrollReveal direction="up" delay={240} duration={500}>
+          <div className="group rounded-2xl border border-[var(--line)] border-t-2 border-t-[rgba(147,185,242,0.32)] bg-gradient-to-br from-[rgba(102,142,206,0.055)] to-[var(--panel)] p-[18px_20px_20px] relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-0.5 hover:border-[rgba(147,185,242,0.44)] hover:shadow-[0_18px_45px_-28px_rgba(82,128,202,0.22)]">
+            <div className="h-[132px] -mx-5 -mt-[18px] mb-[18px] relative overflow-hidden bg-[var(--panel-2)] border-b border-[var(--line-soft)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={getAnimeBannerImage(mostPopularAnime.anime)}
+                alt={`${mostPopularAnime.primaryTitle} banner`}
+                onError={(e) => {
+                  if (e.currentTarget.src !== ANIME_PLACEHOLDER_BANNER) {
+                    e.currentTarget.src = ANIME_PLACEHOLDER_BANNER;
+                  }
+                }}
+                className="w-full h-full object-cover object-center saturate-[0.88] contrast-[0.96] opacity-78 scale-[1.015] transition-all duration-700 ease-[cubic-bezier(.65,0,.35,1)] group-hover:scale-[1.045] group-hover:opacity-92 group-hover:saturate-100 group-hover:contrast-100"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,7,12,0.08)] via-[rgba(8,7,12,0.12)] to-[rgba(19,16,25,0.96)] pointer-events-none" />
+              <span className="absolute left-4 bottom-3.25 z-10 font-mono text-[9px] tracking-[0.08em] uppercase text-[rgba(244,242,248,0.64)]">
+                banner / preview
+              </span>
             </div>
-            <p className="text-xs text-neutral-400 uppercase font-medium">Fan Favorite</p>
-            <h3 className="text-lg sm:text-xl font-bold text-white mt-1 line-clamp-1">
+
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="font-mono text-[10.5px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Fan Favorite
+              </span>
+              <span className="font-mono text-[10.5px] tracking-[0.06em] uppercase text-[rgba(154,192,246,0.84)]">
+                Most Popular
+              </span>
+            </div>
+
+            <h3 className="font-display font-medium text-[19px] text-[var(--text-hi)] mb-1 line-clamp-1">
               {mostPopularAnime.primaryTitle}
             </h3>
-            {mostPopularAnime.secondaryTitle && (
-              <p className="text-xs text-neutral-400 line-clamp-1 font-normal">
-                {mostPopularAnime.secondaryTitle}
-              </p>
-            )}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-emerald-400 font-bold">
-                  ★ {mostPopularAnime.anime.score}
+            <p className="text-[12.5px] text-[var(--text-low)] mb-[18px] line-clamp-1">
+              {mostPopularAnime.secondaryTitle || "\u00A0"}
+            </p>
+
+            <div className="flex items-center justify-between pt-4 border-t border-[var(--line-soft)]">
+              <div className="flex items-center gap-4 font-mono text-xs text-[var(--text-mid)]">
+                <span className="flex items-center gap-1.25">
+                  <svg viewBox="0 0 24 24" fill="#d8c48a" stroke="none" className="w-[12.5px] h-[12.5px]">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  <span style={{ color: getScoreStyle(mostPopularAnime.anime.score) }}>
+                    {mostPopularAnime.anime.score}
+                  </span>
                 </span>
-                <span className="text-indigo-300 font-bold">
-                  👥 {mostPopularAnime.anime.popularity.toLocaleString()}
+                <span className="flex items-center gap-1.25">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#93b9f2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[12.5px] h-[12.5px]">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                  </svg>
+                  <span>{mostPopularAnime.anime.popularity.toLocaleString("en-US")}</span>
                 </span>
               </div>
+
               <a
                 href={mostPopularAnime.anime.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200 transition"
+                className="flex items-center gap-1.5 font-medium text-[12.5px] text-[var(--purple-300)] group-hover:gap-2.25 transition-all"
               >
-                View on AniList &rarr;
+                <span>View on AniList</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                  <path d="M7 17 17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
               </a>
             </div>
           </div>
@@ -93,3 +168,4 @@ export const GenreHighlights = memo(function GenreHighlights({
     </div>
   );
 });
+

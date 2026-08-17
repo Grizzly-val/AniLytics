@@ -44,10 +44,9 @@ export const GenreHeader = memo(function GenreHeader({
 }: GenreHeaderProps) {
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const currentGenreName = selectedGenre || "Genre Animes";
+  const currentGenreName = selectedGenre || decodedGenre || "Genre Animes";
 
   const handleLoadGenresClick = () => {
-    // Input validation
     if (!season) {
       setValidationError("Invalid Season: Please select a valid season.");
       return;
@@ -76,43 +75,36 @@ export const GenreHeader = memo(function GenreHeader({
   const displayError = validationError || errorMessage;
 
   return (
-    <div className="flex flex-col gap-6 border-b border-neutral-800/80 pb-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          {!hideBackLink && (
-            <Link
-              href="/seasonal/genres/aggregates"
-              className="inline-flex items-center gap-2 text-sm font-medium text-purple-300 hover:text-purple-200 transition mb-2"
-              id="back-to-genre-data-link"
-            >
-              &larr; Back to Genre Aggregates
-            </Link>
-          )}
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              <span className="bg-gradient-to-r from-purple-300 via-indigo-300 to-violet-200 bg-clip-text text-transparent">
-                {currentGenreName}
-              </span>
-            </h1>
-            {hasLoadedGenres && season && seasonYear > 0 && format && (
-              <span className="rounded-full bg-neutral-800/80 px-3 py-1 text-xs font-medium text-neutral-300 border border-neutral-700/60">
-                {season} {seasonYear} • {format}
-              </span>
-            )}
-          </div>
-          <p className="text-neutral-400 text-xs sm:text-sm mt-1 font-normal">
-            Detailed breakdown and performance analytics for {selectedGenre ? `${selectedGenre} anime` : "the selected anime genre"}.
-          </p>
-        </div>
+    <div className="space-y-6">
+      {!hideBackLink && (
+        <Link
+          href="/seasonal/genres/aggregates"
+          className="inline-flex items-center gap-2 text-xs font-mono text-[var(--purple-300)] hover:text-white transition-colors"
+          id="back-to-genre-data-link"
+        >
+          &larr; Back to Genre Aggregates
+        </Link>
+      )}
+
+      {/* Heading hierarchy from blueprint: Page Title + Tag divider + Context Tag. No subtext. */}
+      <div className="flex items-baseline gap-3.5 flex-wrap">
+        <h1 className="font-display font-normal text-[clamp(30px,4vw,40px)] tracking-[-0.02em] bg-gradient-to-b from-white via-white to-[var(--purple-300)] bg-clip-text text-transparent">
+          {currentGenreName}
+        </h1>
+        <div className="w-[1px] h-3.5 bg-[var(--line-soft)] self-center" />
+        <span className="font-mono text-[11.5px] tracking-[0.06em] uppercase text-[var(--text-low)]">
+          {season} {seasonYear} · {format}
+        </span>
       </div>
 
-      {/* Dynamic Filter Controls & Load Genres Action */}
-      <div className="bg-neutral-900/50 p-4 rounded-xl border border-neutral-800/80 backdrop-blur-sm shadow-md space-y-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+      {/* Blueprint Filter Bar */}
+      <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-2xl p-5 sm:p-[22px_26px] space-y-4">
+        <div className="flex flex-wrap items-end gap-5 sm:gap-7">
+          {/* Season Select */}
+          <div className="flex flex-col gap-2 min-w-[100px] flex-1 sm:flex-none">
+            <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
               Season
-            </label>
+            </span>
             <select
               id="genre-animes-season-select"
               value={season}
@@ -120,38 +112,39 @@ export const GenreHeader = memo(function GenreHeader({
                 setValidationError(null);
                 onSeasonChange(e.target.value as Season);
               }}
-              className="w-full h-[38px] rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 text-xs text-white focus:border-purple-400 focus:outline-none transition cursor-pointer"
+              className="appearance-none bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13.5px] pb-1.5 pt-0.5 pr-5 focus:outline-none focus:border-[var(--purple-400)] cursor-pointer transition-colors bg-no-repeat bg-[right_2px_center] bg-[length:12px] [background-image:url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%236d6880%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><path%20d=%22m6%209%206%206%206-6%22/></svg>')]"
             >
               {SEASONS.map((s) => (
-                <option key={s} value={s}>
+                <option key={s} value={s} className="bg-[var(--panel)] text-[var(--text-hi)]">
                   {s}
                 </option>
               ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+          {/* Year Input / Select */}
+          <div className="flex flex-col gap-2 min-w-[90px] flex-1 sm:flex-none">
+            <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
               Year
-            </label>
+            </span>
             <input
               id="genre-animes-year-input"
               type="number"
-              placeholder="e.g. 2026"
               value={seasonYear || ""}
               onChange={(e) => {
                 setValidationError(null);
                 const val = e.target.value ? parseInt(e.target.value, 10) : 0;
                 onYearChange(isNaN(val) ? 0 : val);
               }}
-              className="w-full h-[38px] rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 text-xs text-white focus:border-purple-400 focus:outline-none transition"
+              className="bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13.5px] pb-1.5 pt-0.5 focus:outline-none focus:border-[var(--purple-400)] transition-colors w-20 font-mono"
             />
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+          {/* Format Select */}
+          <div className="flex flex-col gap-2 min-w-[90px] flex-1 sm:flex-none">
+            <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
               Format
-            </label>
+            </span>
             <select
               id="genre-animes-format-select"
               value={format}
@@ -159,65 +152,77 @@ export const GenreHeader = memo(function GenreHeader({
                 setValidationError(null);
                 onFormatChange(e.target.value as MediaFormat);
               }}
-              className="w-full h-[38px] rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 text-xs text-white focus:border-purple-400 focus:outline-none transition cursor-pointer"
+              className="appearance-none bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13.5px] pb-1.5 pt-0.5 pr-5 focus:outline-none focus:border-[var(--purple-400)] cursor-pointer transition-colors bg-no-repeat bg-[right_2px_center] bg-[length:12px] [background-image:url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%236d6880%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><path%20d=%22m6%209%206%206%206-6%22/></svg>')]"
             >
               {FORMATS.map((f) => (
-                <option key={f} value={f}>
+                <option key={f} value={f} className="bg-[var(--panel)] text-[var(--text-hi)]">
                   {f}
                 </option>
               ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1.5">
+          {/* Subtle separation divider before Genre */}
+          <div className="w-[1px] h-[34px] bg-[var(--line-soft)] self-end mb-0.5 hidden sm:block" />
+
+          {/* Genre Select */}
+          <div className="flex flex-col gap-2 min-w-[130px] flex-1 sm:flex-none">
+            <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[rgba(178,133,251,0.72)]">
               Genre
-            </label>
+            </span>
             {hasLoadedGenres && availableGenres && availableGenres.length > 0 ? (
               <select
                 id="genre-animes-genre-select"
                 value={selectedGenre || ""}
                 onChange={(e) => onGenreChange?.(e.target.value)}
-                className="w-full h-[38px] rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 text-xs text-white focus:border-purple-400 focus:outline-none transition cursor-pointer"
+                className="appearance-none bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13.5px] pb-1.5 pt-0.5 pr-5 focus:outline-none focus:border-[var(--purple-400)] cursor-pointer transition-colors bg-no-repeat bg-[right_2px_center] bg-[length:12px] [background-image:url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%236d6880%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><path%20d=%22m6%209%206%206%206-6%22/></svg>')]"
               >
-                <option value="">Select Genre...</option>
+                <option value="" className="bg-[var(--panel)] text-[var(--text-low)]">
+                  Select Genre...
+                </option>
                 {availableGenres.map((g) => (
-                  <option key={g} value={g}>
+                  <option key={g} value={g} className="bg-[var(--panel)] text-[var(--text-hi)]">
                     {g}
                   </option>
                 ))}
               </select>
             ) : (
-              <div
-                className="flex items-center justify-between h-[38px] rounded-lg border border-neutral-800/80 bg-neutral-800/40 px-3 text-xs text-neutral-400 font-medium select-none"
-              >
-                <span className="truncate">Genres not loaded</span>
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                  Pending
-                </span>
+              <div className="border-b border-[var(--line)] pb-1.5 text-xs text-[var(--text-low)] font-mono">
+                Pending Load
               </div>
             )}
           </div>
 
-          <div>
-            <button
-              id="load-genres-button"
-              type="button"
-              onClick={handleLoadGenresClick}
-              disabled={isLoadingGenres || isLoadDisabled}
-              className="w-full h-[38px] rounded-lg bg-purple-500 px-4 text-xs font-semibold text-neutral-950 shadow-md shadow-purple-500/15 hover:bg-purple-400 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2 cursor-pointer"
-            >
-              {isLoadingGenres ? (
-                <>
-                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-neutral-950 border-t-transparent" />
-                  <span>Loading...</span>
-                </>
-              ) : (
+          {/* Load Genres Submit Action */}
+          <button
+            id="load-genres-button"
+            type="button"
+            onClick={handleLoadGenresClick}
+            disabled={isLoadingGenres || isLoadDisabled}
+            className={`sm:ml-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border font-medium text-[13px] tracking-[0.01em] transition-all duration-300 cursor-pointer ${
+              isLoadingGenres
+                ? "bg-[rgba(155,92,246,0.2)] border-[var(--purple-400)] text-[var(--purple-300)]"
+                : "border-[var(--purple-400)] bg-[rgba(155,92,246,0.12)] text-[var(--purple-300)] hover:bg-gradient-to-br hover:from-[var(--purple-500)] hover:to-[var(--violet-glow)] hover:text-white hover:border-transparent"
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            {isLoadingGenres ? (
+              <>
+                <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="9" strokeOpacity="0.25" />
+                  <path d="M21 12a9 9 0 0 0-9-9" />
+                </svg>
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
                 <span>Load Genres</span>
-              )}
-            </button>
-          </div>
+              </>
+            )}
+          </button>
         </div>
 
         {displayError && (
@@ -230,3 +235,4 @@ export const GenreHeader = memo(function GenreHeader({
     </div>
   );
 });
+

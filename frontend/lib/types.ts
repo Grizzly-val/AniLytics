@@ -21,6 +21,12 @@ export interface AnimeItem {
   popularity: number;
   trending: number;
   siteUrl: string;
+  bannerImage?: string | null;
+  coverImage?: {
+    extraLarge?: string | null;
+    large?: string | null;
+    medium?: string | null;
+  } | null;
 }
 
 export interface GenreAggregateStats {

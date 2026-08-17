@@ -50,4 +50,39 @@ export function getCurrentYear(date: Date = new Date()): number {
 
 export const DEFAULT_FORMAT: MediaFormat = "TV";
 
+export const ANIME_PLACEHOLDER_BANNER = "/no_banner_placeholder_ANILYTICS.jpg";
+
+export function getScoreStyle(score: number): string {
+  const value = Math.max(0, Math.min(100, Number(score) || 0));
+  let hue: number, sat: number, light: number;
+  if (value >= 80) {
+    const t = (value - 80) / 20;
+    hue = 145;
+    sat = 48 + t * 10;
+    light = 58 + t * 10;
+  } else if (value >= 65) {
+    const t = (value - 65) / 15;
+    hue = 50;
+    sat = 48 + t * 12;
+    light = 52 + t * 8;
+  } else {
+    const t = value / 65;
+    hue = 3;
+    sat = 50 + t * 12;
+    light = 50 + t * 8;
+  }
+  return `hsl(${hue} ${sat}% ${light}%)`;
+}
+
+export function getAnimeBannerImage(anime: { bannerImage?: string | null; coverImage?: { extraLarge?: string | null; large?: string | null } | null }): string {
+  if (anime.bannerImage) return anime.bannerImage;
+  if (anime.coverImage?.extraLarge) return anime.coverImage.extraLarge;
+  if (anime.coverImage?.large) return anime.coverImage.large;
+
+  return ANIME_PLACEHOLDER_BANNER;
+}
+
+
+
+
 

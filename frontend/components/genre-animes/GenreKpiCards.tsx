@@ -17,91 +17,134 @@ export const GenreKpiCards = memo(function GenreKpiCards({
   seasonYear,
   format,
 }: GenreKpiCardsProps) {
-  const cards = [
-    {
-      title: "Total Anime",
-      value: stats.count,
-      sub: `In ${season} ${seasonYear} (${format})`,
-      icon: "🎬",
-      color: "purple",
-    },
-    {
-      title: "Avg Score",
-      value: stats.average_score.toFixed(2),
-      barScore: stats.average_score,
-      icon: "⭐",
-      color: "emerald",
-    },
-    {
-      title: "Avg Popularity",
-      value: Math.round(stats.average_popularity).toLocaleString(),
-      sub: "Total viewers count",
-      icon: "👥",
-      color: "cyan",
-    },
-    {
-      title: "Avg Trending",
-      value: stats.average_trending.toFixed(2),
-      sub: "Activity index",
-      icon: "amber",
-    },
-  ];
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card, idx) => (
-        <ScrollReveal
-          key={card.title}
-          direction="up"
-          delay={idx * 100}
-          duration={500}
-        >
-          <div className="rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-5 backdrop-blur-sm shadow-md flex items-center justify-between h-full">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                {card.title}
-              </p>
-              <p
-                className={`text-2xl sm:text-3xl font-extrabold mt-1 ${
-                  card.color === "emerald"
-                    ? "text-emerald-400"
-                    : card.color === "cyan"
-                    ? "text-cyan-400"
-                    : card.color === "amber"
-                    ? "text-amber-400"
-                    : "text-purple-300"
-                }`}
-              >
-                {card.value}
-              </p>
-
-              {card.barScore !== undefined ? (
-                <div className="w-24 bg-neutral-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div
-                    className="bg-emerald-500 h-full rounded-full"
-                    style={{ width: `${Math.min(100, card.barScore)}%` }}
-                  />
-                </div>
-              ) : (
-                <p className="text-[11px] text-neutral-500 mt-1">{card.sub}</p>
-              )}
-            </div>
-            <div
-              className={`flex h-11 w-11 items-center justify-center rounded-xl text-lg font-bold border ${
-                card.color === "emerald"
-                  ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                  : card.color === "cyan"
-                  ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
-                  : card.color === "amber"
-                  ? "bg-amber-500/10 border-amber-500/20 text-amber-400"
-                  : "bg-purple-500/10 border-purple-500/20 text-purple-300"
-              }`}
-            >
-              {card.icon === "amber" ? "🔥" : card.icon}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[18px] mb-6">
+      {/* 1. Total Anime */}
+      <ScrollReveal direction="up" delay={40} duration={500}>
+        <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] border-t-2 border-t-[rgba(178,133,251,0.38)] rounded-2xl p-[22px_22px_20px] h-full flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-[36px] h-[36px] rounded-xl bg-[rgba(178,133,251,0.10)] border border-[rgba(178,133,251,0.22)] flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#b285fb" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[16px] h-[16px]">
+                <path d="M12 3 2 8l10 5 10-5-10-5Z" />
+                <path d="M2 13l10 5 10-5" />
+              </svg>
             </div>
           </div>
-        </ScrollReveal>
-      ))}
+          <div>
+            <div className="flex items-center gap-1.5 mb-2">
+              <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Total Anime
+              </span>
+            </div>
+            <div className="font-display font-normal text-[29px] tracking-[-0.02em] text-[var(--text-hi)] mb-1">
+              {stats.count}
+            </div>
+            <div className="font-mono text-[10.5px] text-[var(--text-low)]">
+              In {season} {seasonYear} ({format})
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* 2. Avg Score */}
+      <ScrollReveal direction="up" delay={80} duration={500}>
+        <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] border-t-2 border-t-[rgba(227,201,143,0.38)] rounded-2xl p-[22px_22px_20px] h-full flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-[36px] h-[36px] rounded-xl bg-[rgba(227,201,143,0.10)] border border-[rgba(227,201,143,0.22)] flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="#d8c48a" stroke="none" className="w-[16px] h-[16px]">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 mb-2 relative">
+              <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Avg Score
+              </span>
+              <div className="group relative cursor-help w-[17px] h-[17px] rounded-full border border-[rgba(178,133,251,0.32)] font-mono text-[10px] text-[var(--text-mid)] flex items-center justify-center hover:border-[var(--purple-400)] hover:text-[var(--purple-300)] hover:bg-[rgba(155,92,246,0.06)] transition-colors">
+                ?
+                <div className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 w-[225px] bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-xl p-[12px_14px] text-xs leading-[1.55] text-[var(--text-mid)] text-left z-50 shadow-2xl">
+                  Weighted rating based on reviews from AniList users, adjusted to prevent bias.
+                </div>
+              </div>
+            </div>
+            <div className="font-display font-normal text-[29px] tracking-[-0.02em] text-[var(--text-hi)] mb-1">
+              {stats.average_score.toFixed(2)}
+            </div>
+            <div className="font-mono text-[10.5px] text-[var(--text-low)]">
+              Out of 100
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* 3. Avg Popularity */}
+      <ScrollReveal direction="up" delay={120} duration={500}>
+        <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] border-t-2 border-t-[rgba(147,185,242,0.38)] rounded-2xl p-[22px_22px_20px] h-full flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-[36px] h-[36px] rounded-xl bg-[rgba(147,185,242,0.10)] border border-[rgba(147,185,242,0.22)] flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#93b9f2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[16px] h-[16px]">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 mb-2 relative">
+              <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Avg Popularity
+              </span>
+              <div className="group relative cursor-help w-[17px] h-[17px] rounded-full border border-[rgba(178,133,251,0.32)] font-mono text-[10px] text-[var(--text-mid)] flex items-center justify-center hover:border-[var(--purple-400)] hover:text-[var(--purple-300)] hover:bg-[rgba(155,92,246,0.06)] transition-colors">
+                ?
+                <div className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 w-[225px] bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-xl p-[12px_14px] text-xs leading-[1.55] text-[var(--text-mid)] text-left z-50 shadow-2xl">
+                  The total number of AniList users who have added this to their list.
+                </div>
+              </div>
+            </div>
+            <div className="font-display font-normal text-[29px] tracking-[-0.02em] text-[var(--text-hi)] mb-1">
+              {Math.round(stats.average_popularity).toLocaleString("en-US")}
+            </div>
+            <div className="font-mono text-[10.5px] text-[var(--text-low)]">
+              Total viewers count
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      {/* 4. Avg Trending */}
+      <ScrollReveal direction="up" delay={160} duration={500}>
+        <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] border-t-2 border-t-[rgba(242,164,141,0.38)] rounded-2xl p-[22px_22px_20px] h-full flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-[36px] h-[36px] rounded-xl bg-[rgba(242,164,141,0.10)] border border-[rgba(242,164,141,0.22)] flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f2a48d" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[16px] h-[16px]">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 mb-2 relative">
+              <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+                Avg Trending
+              </span>
+              <div className="group relative cursor-help w-[17px] h-[17px] rounded-full border border-[rgba(178,133,251,0.32)] font-mono text-[10px] text-[var(--text-mid)] flex items-center justify-center hover:border-[var(--purple-400)] hover:text-[var(--purple-300)] hover:bg-[rgba(155,92,246,0.06)] transition-colors">
+                ?
+                <div className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 absolute left-1/2 top-[calc(100%+10px)] -translate-x-1/2 w-[225px] bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-xl p-[12px_14px] text-xs leading-[1.55] text-[var(--text-mid)] text-left z-50 shadow-2xl">
+                  Recent daily spikes in activity — e.g. one trending point is gained each time a user updates their list progress, drops a review, or adds an anime to their favorites.
+                </div>
+              </div>
+            </div>
+            <div className="font-display font-normal text-[29px] tracking-[-0.02em] text-[var(--text-hi)] mb-1">
+              {stats.average_trending.toFixed(2)}
+            </div>
+            <div className="font-mono text-[10.5px] text-[var(--text-low)]">
+              Activity index
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
     </div>
   );
 });
+
