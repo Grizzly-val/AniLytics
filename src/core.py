@@ -8,27 +8,28 @@ from src.schemas import MediaFormat, Season
 async def get_seasonal_genres_data(season: Season, seasonYear: int, format: MediaFormat, services: Services) -> dict:
 
     query = """
-            query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
-                Page (page: $page, perPage: 50){
-                    pageInfo {
-                        currentPage
-                        hasNextPage
-                    }
+        query ($page: Int, $season: MediaSeason, $seasonYear: Int, $format: MediaFormat){
+            Page (page: $page, perPage: 50){
+                pageInfo {
+                    currentPage
+                    hasNextPage
+                }
 
-                    media (season: $season, seasonYear: $seasonYear, type: ANIME, format: $format, sort: POPULARITY) {
-                        genres
-                        averageScore
-                        popularity
-                        trending
-                        siteUrl
-                        title {
-                            english
-                            native
-                            romaji
-                        }
+                media (season: $season, seasonYear: $seasonYear, type: ANIME, format: $format, sort: POPULARITY_DESC) {
+                    title {
+                        english
+                        native
+                        romaji
                     }
+                    genres
+                    averageScore
+                    popularity
+                    trending
+                    siteUrl
+                    bannerImage
                 }
             }
+        }
             """
 
     services.logger.info("...")
@@ -73,7 +74,8 @@ async def get_seasonal_genres_data(season: Season, seasonYear: int, format: Medi
                 "score": score,
                 "popularity": popularity,
                 "trending": trending,
-                "siteUrl": anime["siteUrl"]
+                "siteUrl": anime["siteUrl"],
+                "bannerImage": anime["bannerImage"]
             })
 
             genre_aggregates_totals[genre]["total_score"]            += score
