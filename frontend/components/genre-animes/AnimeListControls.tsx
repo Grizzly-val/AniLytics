@@ -28,66 +28,80 @@ export const AnimeListControls = memo(function AnimeListControls({
   onViewModeChange,
 }: AnimeListControlsProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-neutral-900/60 p-4 rounded-xl border border-neutral-800">
-      <div className="relative flex-1">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-4 shadow-md backdrop-blur-sm">
+      {/* Search Input */}
+      <div className="relative flex-1 max-w-md">
         <input
           id="anime-search-input"
           type="text"
           placeholder="Search anime title..."
           value={searchQuery}
           onChange={(e) => onSearchQueryChange(e.target.value)}
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2 text-sm text-white placeholder-neutral-500 focus:border-indigo-500 focus:outline-none transition"
+          className="w-full rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-4 py-2 text-xs sm:text-sm text-white placeholder-neutral-500 focus:border-purple-400 focus:outline-none transition"
         />
         {searchQuery && (
           <button
+            type="button"
             onClick={() => onSearchQueryChange("")}
-            className="absolute right-3 top-2.5 text-xs text-neutral-400 hover:text-white"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-white"
           >
-            Clear
+            ✕
           </button>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
-        <select
-          id="anime-sort-by-select"
-          value={sortBy}
-          onChange={(e) => onSortByChange(e.target.value as SortByOption)}
-          className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs text-white focus:border-indigo-500 focus:outline-none"
-        >
-          <option value="score">Sort by Score</option>
-          <option value="popularity">Sort by Popularity</option>
-          <option value="trending">Sort by Trending</option>
-          <option value="title">Sort by Title</option>
-        </select>
+      {/* Controls: Sort & View Mode */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Sort By Select */}
+        <div className="flex items-center gap-2">
+          <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            Sort:
+          </label>
+          <select
+            id="anime-sort-by-select"
+            value={sortBy}
+            onChange={(e) => onSortByChange(e.target.value as SortByOption)}
+            className="rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 py-2 text-xs text-white focus:border-purple-400 focus:outline-none cursor-pointer"
+          >
+            <option value="score">Score</option>
+            <option value="popularity">Popularity</option>
+            <option value="trending">Trending</option>
+            <option value="title">Title</option>
+          </select>
 
-        <button
-          id="anime-sort-order-toggle"
-          onClick={onToggleSortOrder}
-          className="rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-700 transition"
-          title="Toggle Sort Direction"
-        >
-          {sortOrder === "desc" ? "High → Low" : "Low → High"}
-        </button>
-
-        <div className="flex border border-neutral-700 rounded-lg overflow-hidden bg-neutral-800">
+          {/* Sort Order Toggle */}
           <button
-            id="view-mode-grid"
+            id="anime-sort-order-toggle"
+            type="button"
+            onClick={onToggleSortOrder}
+            className="rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 py-2 text-xs font-medium text-neutral-300 hover:text-white hover:border-purple-400 transition cursor-pointer"
+            title={`Order: ${sortOrder === "desc" ? "Descending" : "Ascending"}`}
+          >
+            {sortOrder === "desc" ? "↓ High to Low" : "↑ Low to High"}
+          </button>
+        </div>
+
+        {/* View Mode Toggle */}
+        <div className="flex items-center rounded-lg border border-neutral-700/80 bg-neutral-800/90 p-1">
+          <button
+            id="view-mode-grid-button"
+            type="button"
             onClick={() => onViewModeChange("grid")}
-            className={`px-3 py-1.5 text-xs font-medium transition ${
+            className={`rounded-md px-3 py-1 text-xs font-semibold transition cursor-pointer ${
               viewMode === "grid"
-                ? "bg-indigo-600 text-white"
+                ? "bg-purple-500 text-neutral-950 shadow-sm"
                 : "text-neutral-400 hover:text-white"
             }`}
           >
             Grid
           </button>
           <button
-            id="view-mode-table"
+            id="view-mode-table-button"
+            type="button"
             onClick={() => onViewModeChange("table")}
-            className={`px-3 py-1.5 text-xs font-medium transition ${
+            className={`rounded-md px-3 py-1 text-xs font-semibold transition cursor-pointer ${
               viewMode === "table"
-                ? "bg-indigo-600 text-white"
+                ? "bg-purple-500 text-neutral-950 shadow-sm"
                 : "text-neutral-400 hover:text-white"
             }`}
           >

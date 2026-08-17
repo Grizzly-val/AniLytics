@@ -19,16 +19,16 @@ export const GenreHighlights = memo(function GenreHighlights({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {topScoredAnime && (
         <ScrollReveal direction="up" delay={0} duration={500}>
-          <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/30 to-neutral-900/60 p-5 relative overflow-hidden h-full">
-            <div className="absolute top-3 right-3 text-xs uppercase font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/30 px-2.5 py-1 rounded-full">
+          <div className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-950/40 to-neutral-900/50 p-5 relative overflow-hidden h-full">
+            <div className="absolute top-3 right-3 text-xs uppercase font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/30 px-2.5 py-1 rounded-full">
               Highest Scored
             </div>
             <p className="text-xs text-neutral-400 uppercase font-medium">Top Performer</p>
-            <h3 className="text-xl font-bold text-white mt-1 line-clamp-1">
+            <h3 className="text-lg sm:text-xl font-bold text-white mt-1 line-clamp-1">
               {topScoredAnime.primaryTitle}
             </h3>
             {topScoredAnime.secondaryTitle && (
-              <p className="text-xs text-neutral-400 line-clamp-1">
+              <p className="text-xs text-neutral-400 line-clamp-1 font-normal">
                 {topScoredAnime.secondaryTitle}
               </p>
             )}
@@ -45,7 +45,7 @@ export const GenreHighlights = memo(function GenreHighlights({
                 href={topScoredAnime.anime.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-purple-200 transition"
               >
                 View on AniList &rarr;
               </a>
@@ -56,16 +56,16 @@ export const GenreHighlights = memo(function GenreHighlights({
 
       {mostPopularAnime && (
         <ScrollReveal direction="up" delay={100} duration={500}>
-          <div className="rounded-xl border border-pink-500/30 bg-gradient-to-br from-pink-950/30 to-neutral-900/60 p-5 relative overflow-hidden h-full">
-            <div className="absolute top-3 right-3 text-xs uppercase font-bold text-pink-400 bg-pink-500/10 border border-pink-500/30 px-2.5 py-1 rounded-full">
+          <div className="rounded-xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/40 to-neutral-900/50 p-5 relative overflow-hidden h-full">
+            <div className="absolute top-3 right-3 text-xs uppercase font-semibold text-indigo-300 bg-indigo-500/10 border border-indigo-500/30 px-2.5 py-1 rounded-full">
               Most Popular
             </div>
             <p className="text-xs text-neutral-400 uppercase font-medium">Fan Favorite</p>
-            <h3 className="text-xl font-bold text-white mt-1 line-clamp-1">
+            <h3 className="text-lg sm:text-xl font-bold text-white mt-1 line-clamp-1">
               {mostPopularAnime.primaryTitle}
             </h3>
             {mostPopularAnime.secondaryTitle && (
-              <p className="text-xs text-neutral-400 line-clamp-1">
+              <p className="text-xs text-neutral-400 line-clamp-1 font-normal">
                 {mostPopularAnime.secondaryTitle}
               </p>
             )}
@@ -74,7 +74,7 @@ export const GenreHighlights = memo(function GenreHighlights({
                 <span className="text-emerald-400 font-bold">
                   ★ {mostPopularAnime.anime.score}
                 </span>
-                <span className="text-pink-400 font-bold">
+                <span className="text-indigo-300 font-bold">
                   👥 {mostPopularAnime.anime.popularity.toLocaleString()}
                 </span>
               </div>
@@ -82,7 +82,7 @@ export const GenreHighlights = memo(function GenreHighlights({
                 href={mostPopularAnime.anime.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-pink-400 hover:text-pink-300 transition"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-300 hover:text-indigo-200 transition"
               >
                 View on AniList &rarr;
               </a>

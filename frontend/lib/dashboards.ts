@@ -6,6 +6,16 @@ export interface Dashboard {
   path: string;
 }
 
+export interface DeckDashboard {
+  id: string;
+  badge: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  href: string;
+  iconType: "chart-bar" | "list-bullet" | string;
+}
+
 // Flat export of all dashboards across all subjects and sections for backwards compatibility
 export const dashboards: Dashboard[] = SUBJECTS.flatMap((subject) =>
   subject.sections.flatMap((section) =>
@@ -16,3 +26,21 @@ export const dashboards: Dashboard[] = SUBJECTS.flatMap((subject) =>
     }))
   )
 );
+
+// Get structured dashboard card models for the homepage stack
+export function getFeaturedDashboards(): DeckDashboard[] {
+  const seasonalSubject = SUBJECTS.find((s) => s.id === "seasonal");
+  if (!seasonalSubject) return [];
+
+  return seasonalSubject.sections.flatMap((section) =>
+    section.dashboards.map((dash) => ({
+      id: dash.slug,
+      badge: dash.badge || "Macro Overview",
+      title: dash.title,
+      desc: dash.description,
+      tags: dash.features || [],
+      href: dash.path,
+      iconType: dash.icon,
+    }))
+  );
+}

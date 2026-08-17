@@ -15,25 +15,25 @@ export default function AggregatesHeader() {
         <span>/</span>
         <span>Genres</span>
         <span>/</span>
-        <span className="text-indigo-400 font-semibold">Aggregates</span>
+        <span className="text-purple-300 font-medium">Aggregates</span>
       </nav>
 
       {/* Header */}
-      <div className="border-b border-neutral-800 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="border-b border-neutral-800/80 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            <span className="bg-gradient-to-r from-purple-300 via-indigo-300 to-violet-200 bg-clip-text text-transparent">
               Genre Aggregates
             </span>
           </h1>
-          <p className="text-neutral-400 mt-1.5 text-sm max-w-3xl">
+          <p className="text-neutral-400 mt-1.5 text-xs sm:text-sm max-w-3xl font-normal">
             Filter and analyze anime counts, average scores, popularity, and trending metrics across anime genres by season and format.
           </p>
         </div>
 
         <Link
           href="/seasonal/genres/genre-animes"
-          className="inline-flex items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2 text-xs font-semibold text-neutral-300 hover:text-white hover:border-neutral-600 transition shrink-0"
+          className="inline-flex items-center gap-2 rounded-lg border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-xs font-semibold text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-purple-200 transition shrink-0"
         >
           <span>Switch to Genre Animes &rarr;</span>
         </Link>

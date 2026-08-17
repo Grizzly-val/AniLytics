@@ -2,71 +2,102 @@
 
 import Link from "next/link";
 import { DashboardConfig } from "@/lib/subjects";
-import { ScrollReveal } from "@/components/common/ScrollReveal";
 
 interface DashboardCardProps {
   dashboard: DashboardConfig;
+  index?: number;
 }
 
-export function DashboardCard({ dashboard }: DashboardCardProps) {
+export function DashboardCard({ dashboard, index = 0 }: DashboardCardProps) {
+  const tags = dashboard.tags || dashboard.features || [];
+
   return (
-    <ScrollReveal direction="left" duration={500} className="h-full">
-      <div className="group flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-6 sm:p-8 backdrop-blur-sm transition-all duration-200 hover:border-indigo-500/50 hover:bg-neutral-900/90 shadow-xl h-full">
-        <div className="space-y-5">
-          <div className="flex items-center justify-between">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 text-indigo-300 border border-indigo-500/30 group-hover:scale-105 transition-transform duration-200">
+    <div
+      className="group relative flex flex-col justify-between bg-[linear-gradient(160deg,var(--panel-2),var(--panel))] border border-[var(--line)] rounded-[18px] p-7 sm:p-8 transition-all duration-300 ease-[cubic-bezier(.65,0,.35,1)] hover:border-[rgba(178,133,251,0.35)] hover:-translate-y-1 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] h-full animate-fade-in"
+      style={{ animationDelay: `${index * 80}ms` }}
+    >
+      <div className="flex flex-col grow">
+        {/* Card Top Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="w-[42px] h-[42px] rounded-[11px] bg-[rgba(155,92,246,0.12)] border border-[var(--line)] flex items-center justify-center shrink-0">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-[19px] h-[19px] stroke-[var(--purple-300)]"
+            >
               {dashboard.icon === "chart-bar" ? (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+                <>
+                  <path d="M3 3v18h18" />
+                  <path d="M18 17V9" />
+                  <path d="M13 17V5" />
+                  <path d="M8 17v-3" />
+                </>
               ) : (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
+                <>
+                  <path d="M20 7h-3a2 2 0 0 1-2-2V2" />
+                  <path d="M9 22H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9l5 5v13a2 2 0 0 1-2 2h-2" />
+                  <path d="M12 12v6" />
+                  <path d="M9 15h6" />
+                </>
               )}
-            </div>
-            {dashboard.badge && (
-              <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400 border border-indigo-500/20">
-                {dashboard.badge}
-              </span>
-            )}
+            </svg>
           </div>
 
-          <div>
-            <h3 className="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors">
-              {dashboard.title}
-            </h3>
-            <p className="text-sm text-neutral-400 mt-2 leading-relaxed">
-              {dashboard.description}
-            </p>
-          </div>
-
-          {dashboard.features && (
-            <div className="flex flex-wrap gap-2 pt-1">
-              {dashboard.features.map((feature) => (
-                <span
-                  key={feature}
-                  className="rounded-lg bg-neutral-800/90 px-3 py-1 text-xs font-medium text-neutral-300 border border-neutral-700/60"
-                >
-                  ✨ {feature}
-                </span>
-              ))}
-            </div>
+          {dashboard.badge && (
+            <span className="no-bubble-label text-[10.5px] tracking-[0.08em] uppercase text-[var(--purple-300)] font-mono">
+              {dashboard.badge}
+            </span>
           )}
         </div>
 
-        <div className="pt-8 border-t border-neutral-800/80 mt-6">
-          <Link
-            href={dashboard.path}
-            className="flex items-center justify-center gap-2 w-full rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 group-hover:bg-indigo-500 hover:shadow-indigo-500/30 transition duration-150"
-          >
-            <span>Open {dashboard.title}</span>
-            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </Link>
-        </div>
+        {/* Card Title */}
+        <h3 className="font-display font-medium text-[21px] tracking-[-0.01em] text-[var(--text-hi)] mb-2.5 group-hover:text-white transition-colors truncate">
+          {dashboard.title}
+        </h3>
+
+        {/* Card Description */}
+        <p className="font-body text-[13.5px] leading-[1.6] text-[var(--text-mid)] mb-4.5 grow line-clamp-3">
+          {dashboard.description}
+        </p>
+
+        {/* Card Tags - Slash Separated */}
+        {tags.length > 0 && (
+          <div className="no-bubble-tag text-[10.5px] tracking-[0.02em] text-[var(--text-low)] mb-5 truncate font-mono">
+            {tags.map((tag, idx) => (
+              <span key={tag}>
+                {idx > 0 && <span className="text-[var(--line)] mx-2">/</span>}
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
-    </ScrollReveal>
+
+      {/* Card Foot */}
+      <div className="flex items-center justify-end pt-4 border-t border-[var(--line-soft)] mt-auto">
+        <Link
+          href={dashboard.path}
+          className="group/link inline-flex items-center gap-1.75 font-body font-medium text-[13px] text-[var(--purple-300)] transition-all hover:gap-2.75 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--purple-400)] rounded-sm"
+        >
+          <span>Open dashboard</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-[13px] h-[13px] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover:translate-x-0.5"
+          >
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </Link>
+      </div>
+    </div>
   );
 }

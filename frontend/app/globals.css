@@ -1,26 +1,177 @@
 @import "tailwindcss";
 
+@theme {
+  --font-display: var(--font-sora), sans-serif;
+  --font-sora: var(--font-sora), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-mono), monospace;
+
+  --color-anilytics-bg: #08070c;
+  --color-anilytics-panel: #131019;
+  --color-anilytics-panel-2: #17131e;
+  --color-anilytics-line: rgba(168, 141, 255, 0.14);
+  --color-anilytics-line-soft: rgba(255, 255, 255, 0.06);
+  --color-anilytics-purple-500: #9b5cf6;
+  --color-anilytics-purple-400: #b285fb;
+  --color-anilytics-purple-300: #cdbdfb;
+  --color-anilytics-violet-glow: #7c3aed;
+  --color-anilytics-text-hi: #f4f2f8;
+  --color-anilytics-text-mid: #a9a3b8;
+  --color-anilytics-text-low: #6d6880;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #08070c;
+  --panel: #131019;
+  --panel-2: #17131e;
+  --line: rgba(168, 141, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --purple-500: #9b5cf6;
+  --purple-400: #b285fb;
+  --purple-300: #cdbdfb;
+  --violet-glow: #7c3aed;
+  --text-hi: #f4f2f8;
+  --text-mid: #a9a3b8;
+  --text-low: #6d6880;
+
+  --font-display: var(--font-sora), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-mono), monospace;
+  --ease-custom: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*, ::before, ::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  min-height: 100%;
+  background-color: var(--bg);
+  color: var(--text-hi);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center -1px;
+}
+
+::selection {
+  background: var(--purple-500);
+  color: #ffffff;
+}
+
+/* Base keyframe animations */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes gridBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.65; }
+  50% { transform: scale(1.045); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulseDot 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.animate-grid-breathe {
+  animation: gridBreathe 6.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Shared Primitives: No-bubble typography labels & tags */
+.no-bubble-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--purple-300);
+}
+
+.no-bubble-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--text-low);
+  line-height: 1.8;
+}
+
+/* Nav Link item with animated bottom border */
+.nav-link-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-mid);
+  padding: 4px 2px;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link-item::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: -2px;
+  height: 1px;
+  background: var(--purple-400);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(.65, 0, .35, 1);
+}
+
+.nav-link-item:hover {
+  color: var(--text-hi);
+}
+
+.nav-link-item:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-link-item svg {
+  transition: transform 0.25s cubic-bezier(.65, 0, .35, 1);
+}
+
+.nav-link-item:hover svg {
+  transform: translateX(2px);
+}
+
+/* Accessibility: Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-dot,
+  .animate-grid-breathe,
+  .dash-card,
+  .dot-btn,
+  .nav-btn,
+  .eyebrow-seg,
+  .meta-text {
+    transition: none !important;
+    animation: none !important;
+  }
 }

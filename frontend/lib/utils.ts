@@ -27,7 +27,7 @@ export function getSecondaryTitle(title: AnimeTitle): string | null {
 
 export function getScoreBadgeClass(score: number): string {
   if (score >= 80) return "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
-  if (score >= 70) return "bg-indigo-500/10 text-indigo-400 border-indigo-500/30";
+  if (score >= 70) return "bg-purple-500/10 text-purple-300 border-purple-500/30";
   if (score >= 60) return "bg-amber-500/10 text-amber-400 border-amber-500/30";
   return "bg-rose-500/10 text-rose-400 border-rose-500/30";
 }

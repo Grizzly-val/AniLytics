@@ -15,9 +15,9 @@ export const AnimeTable = memo(function AnimeTable({
   highlightedTitle,
 }: AnimeTableProps) {
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 overflow-x-auto shadow-md">
+    <div className="rounded-xl border border-neutral-800/80 bg-neutral-900/50 overflow-x-auto shadow-md">
       <table className="w-full text-left text-xs">
-        <thead className="border-b border-neutral-800 bg-neutral-900/80 uppercase font-semibold text-neutral-400 tracking-wider">
+        <thead className="border-b border-neutral-800/80 bg-neutral-900/80 uppercase font-semibold text-neutral-400 tracking-wider">
           <tr>
             <th className="px-4 py-3">#</th>
             <th className="px-4 py-3">Title</th>
@@ -42,7 +42,7 @@ export const AnimeTable = memo(function AnimeTable({
                 duration={400}
                 className={`transition-all duration-300 ${
                   isHighlighted
-                    ? "bg-indigo-950/70 border-l-4 border-l-indigo-500 font-semibold"
+                    ? "bg-purple-950/40 border-l-4 border-l-purple-400 font-semibold"
                     : "hover:bg-neutral-800/30"
                 }`}
               >
@@ -52,7 +52,7 @@ export const AnimeTable = memo(function AnimeTable({
                 <td className="px-4 py-3 font-medium text-white max-w-xs truncate">
                   <div>{item.primaryTitle}</div>
                   {item.secondaryTitle && (
-                    <div className="text-[10px] text-neutral-500 truncate">
+                    <div className="text-[10px] text-neutral-500 truncate font-normal">
                       {item.secondaryTitle}
                     </div>
                   )}
@@ -71,7 +71,7 @@ export const AnimeTable = memo(function AnimeTable({
                     href={item.anime.siteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-indigo-400 hover:text-indigo-300 font-semibold"
+                    className="text-purple-300 hover:text-purple-200 font-semibold"
                   >
                     AniList ↗
                   </a>

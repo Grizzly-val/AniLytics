@@ -26,7 +26,7 @@ export default function AggregatesFilterForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 sm:p-6 backdrop-blur-sm shadow-md space-y-4"
+      className="rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-4 sm:p-6 backdrop-blur-sm shadow-md space-y-4"
     >
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
@@ -37,7 +37,7 @@ export default function AggregatesFilterForm({
             id="genre-data-season-select"
             value={seasonInput}
             onChange={(e) => onSeasonChange(e.target.value as Season)}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
+            className="w-full rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 py-2 text-white text-xs sm:text-sm focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400 transition cursor-pointer"
           >
             {SEASONS.map((s) => (
               <option key={s} value={s}>
@@ -60,7 +60,7 @@ export default function AggregatesFilterForm({
               const val = e.target.value ? parseInt(e.target.value, 10) : 0;
               onYearChange(isNaN(val) ? 0 : val);
             }}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition"
+            className="w-full rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 py-2 text-white text-xs sm:text-sm focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400 transition"
           />
         </div>
 
@@ -72,7 +72,7 @@ export default function AggregatesFilterForm({
             id="genre-data-format-select"
             value={formatInput}
             onChange={(e) => onFormatChange(e.target.value as MediaFormat)}
-            className="w-full rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-white text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer"
+            className="w-full rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3 py-2 text-white text-xs sm:text-sm focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400 transition cursor-pointer"
           >
             {FORMATS.map((f) => (
               <option key={f} value={f}>
@@ -88,7 +88,7 @@ export default function AggregatesFilterForm({
           id="submit-genre-data-filters"
           type="submit"
           disabled={!canSubmit}
-          className="rounded-lg bg-indigo-600 px-6 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150 cursor-pointer"
+          className="rounded-lg bg-purple-500 px-6 py-2 text-xs sm:text-sm font-semibold text-neutral-950 shadow-md shadow-purple-500/15 hover:bg-purple-400 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150 cursor-pointer"
         >
           Submit Filters
         </button>

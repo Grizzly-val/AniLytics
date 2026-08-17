@@ -69,7 +69,7 @@ export default memo(function GenreBarChart({
       case "popularity":
         return {
           label: "Average Popularity",
-          color: "#ec4899", // Pink
+          color: "#06b6d4", // Cyan
           domain: [0, "auto"] as const,
           format: (v: number) => Math.round(v).toLocaleString(),
         };
@@ -77,7 +77,7 @@ export default memo(function GenreBarChart({
       default:
         return {
           label: "Average Score",
-          color: "#6366f1", // Indigo
+          color: "#c084fc", // Light Purple (Purple-400)
           domain: [0, 100] as const,
           format: (v: number) => v.toFixed(2),
         };
@@ -119,7 +119,7 @@ export default memo(function GenreBarChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-neutral-400">
+      <div className="flex h-48 items-center justify-center rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-6 text-neutral-400">
         No genre data available for the selected criteria.
       </div>
     );
@@ -128,10 +128,10 @@ export default memo(function GenreBarChart({
   const chartHeight = chartData.length * 32 + 40;
 
   return (
-    <div className="w-full rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 sm:p-6 shadow-xl backdrop-blur-sm">
+    <div className="w-full rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-4 sm:p-6 shadow-xl backdrop-blur-sm">
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-800/80 pb-4">
         <div>
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-base sm:text-lg font-bold text-white">
             {metricConfig.label} by Genre
           </h3>
           <span className="text-xs text-neutral-400">{chartData.length} Genres</span>
@@ -145,7 +145,7 @@ export default memo(function GenreBarChart({
               id="chart-metric-select"
               value={metric}
               onChange={(e) => onMetricChange(e.target.value as any)}
-              className="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white focus:border-indigo-500 focus:outline-none transition cursor-pointer"
+              className="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-xs font-semibold text-white focus:border-purple-400 focus:outline-none transition cursor-pointer"
             >
               <option value="count">Count</option>
               <option value="average_score">Average Score</option>

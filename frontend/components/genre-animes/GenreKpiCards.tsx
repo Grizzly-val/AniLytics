@@ -23,7 +23,7 @@ export const GenreKpiCards = memo(function GenreKpiCards({
       value: stats.count,
       sub: `In ${season} ${seasonYear} (${format})`,
       icon: "🎬",
-      color: "indigo",
+      color: "purple",
     },
     {
       title: "Avg Score",
@@ -37,14 +37,13 @@ export const GenreKpiCards = memo(function GenreKpiCards({
       value: Math.round(stats.average_popularity).toLocaleString(),
       sub: "Total viewers count",
       icon: "👥",
-      color: "pink",
+      color: "cyan",
     },
     {
       title: "Avg Trending",
       value: stats.average_trending.toFixed(2),
       sub: "Activity index",
-      icon: "🔥",
-      color: "amber",
+      icon: "amber",
     },
   ];
 
@@ -57,20 +56,20 @@ export const GenreKpiCards = memo(function GenreKpiCards({
           delay={idx * 100}
           duration={500}
         >
-          <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 backdrop-blur-sm shadow-md flex items-center justify-between h-full">
+          <div className="rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-5 backdrop-blur-sm shadow-md flex items-center justify-between h-full">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
                 {card.title}
               </p>
               <p
-                className={`text-3xl font-extrabold mt-1 ${
+                className={`text-2xl sm:text-3xl font-extrabold mt-1 ${
                   card.color === "emerald"
                     ? "text-emerald-400"
-                    : card.color === "pink"
-                    ? "text-pink-400"
+                    : card.color === "cyan"
+                    ? "text-cyan-400"
                     : card.color === "amber"
                     ? "text-amber-400"
-                    : "text-white"
+                    : "text-purple-300"
                 }`}
               >
                 {card.value}
@@ -88,17 +87,17 @@ export const GenreKpiCards = memo(function GenreKpiCards({
               )}
             </div>
             <div
-              className={`flex h-12 w-12 items-center justify-center rounded-xl text-xl font-bold border ${
+              className={`flex h-11 w-11 items-center justify-center rounded-xl text-lg font-bold border ${
                 card.color === "emerald"
                   ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                  : card.color === "pink"
-                  ? "bg-pink-500/10 border-pink-500/20 text-pink-400"
+                  : card.color === "cyan"
+                  ? "bg-cyan-500/10 border-cyan-500/20 text-cyan-400"
                   : card.color === "amber"
                   ? "bg-amber-500/10 border-amber-500/20 text-amber-400"
-                  : "bg-indigo-500/10 border-indigo-500/20 text-indigo-400"
+                  : "bg-purple-500/10 border-purple-500/20 text-purple-300"
               }`}
             >
-              {card.icon}
+              {card.icon === "amber" ? "🔥" : card.icon}
             </div>
           </div>
         </ScrollReveal>

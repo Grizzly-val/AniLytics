@@ -1,41 +1,61 @@
-import Link from "next/link";
-import { SUBJECTS } from "@/lib/subjects";
+import { RotatingEyebrow } from "@/components/home/RotatingEyebrow";
+import { RotatingMetaText } from "@/components/home/RotatingMetaText";
+import { DashboardCardDeck } from "@/components/home/DashboardCardDeck";
+import { getFeaturedDashboards } from "@/lib/dashboards";
 
 export default function HomePage() {
+  const dashboards = getFeaturedDashboards();
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
-      <div className="text-center max-w-3xl mx-auto space-y-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-400 backdrop-blur-sm">
-          <span className="flex h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
-          <span>Real-Time Anime Analytics Hub</span>
+    <div className="flex-1 flex flex-col justify-center max-w-[1400px] mx-auto w-full px-6 lg:px-12 py-10 lg:py-0">
+      <main className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-10 min-h-[calc(100vh-79px)]">
+        {/* Left Panel */}
+        <div className="relative z-10 flex flex-col items-start max-w-[520px] pl-4 sm:pl-[26px]">
+          {/* Subtle Breathing Grid Patch */}
+          <div
+            aria-hidden="true"
+            className="absolute w-[360px] h-[360px] sm:w-[620px] sm:h-[620px] -left-12 -top-40 pointer-events-none -z-10 animate-grid-breathe origin-center"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(178,133,251,0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(178,133,251,0.5) 1px, transparent 1px)
+              `,
+              backgroundSize: "64px 64px",
+              WebkitMaskImage:
+                "radial-gradient(circle at 50% 50%, black 0%, black 28%, rgba(0,0,0,0.5) 46%, transparent 68%)",
+              maskImage:
+                "radial-gradient(circle at 50% 50%, black 0%, black 28%, rgba(0,0,0,0.5) 46%, transparent 68%)",
+            }}
+          />
+
+          {/* Thin Vertical Editorial Accent Line */}
+          <div
+            aria-hidden="true"
+            className="absolute left-0 top-[4px] w-[1.5px] h-[186px] bg-[linear-gradient(180deg,var(--purple-400)_0%,rgba(124,58,237,0.25)_55%,transparent_100%)] -z-10"
+          />
+
+          {/* Rotating Eyebrow */}
+          <RotatingEyebrow />
+
+          {/* Main Gradient Headline */}
+          <h1 className="font-display font-light text-[48px] sm:text-[clamp(56px,7vw,92px)] leading-[0.98] tracking-[-0.03em] bg-[linear-gradient(180deg,#ffffff_0%,var(--purple-300)_120%)] bg-clip-text text-transparent mb-5.5 select-none">
+            Ani<strong className="font-medium text-transparent">Lytics</strong>
+          </h1>
+
+          {/* Subtext */}
+          <p className="font-body font-normal text-[15.5px] sm:text-[16.5px] leading-[1.65] text-[var(--text-mid)] max-w-[400px] mb-9">
+            Anime analytics, one module at a time.
+          </p>
+
+          {/* Rotating Meta Stat Line */}
+          <RotatingMetaText />
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-          Welcome to{" "}
-          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            AniLytics
-          </span>
-        </h1>
-
-        <p className="text-base sm:text-lg text-neutral-400 leading-relaxed max-w-2xl mx-auto">
-          Explore seasonal anime statistics, genre rankings, and popularity metrics powered by real-time data analysis. Select a subject from the navigation above to get started.
-        </p>
-
-        <div className="pt-4 flex flex-wrap justify-center gap-4">
-          {SUBJECTS.map((subject) => (
-            <Link
-              key={subject.id}
-              href={subject.path}
-              className="inline-flex items-center gap-2.5 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-500 hover:shadow-indigo-500/35 transition-all duration-200"
-            >
-              <span>Explore {subject.title} Hub</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
-          ))}
+        {/* Right Panel / Interactive Card Deck */}
+        <div className="relative flex flex-col items-center justify-center">
+          <DashboardCardDeck dashboards={dashboards} />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

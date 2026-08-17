@@ -6,7 +6,8 @@ export interface DashboardConfig {
   description: string;
   badge?: string;
   features?: string[];
-  icon: "chart-bar" | "list-bullet" | "sparkles" | "fire" | "film";
+  tags?: string[];
+  icon: "chart-bar" | "list-bullet" | "sparkles" | "fire" | "film" | string;
 }
 
 export interface SectionConfig {
@@ -17,6 +18,15 @@ export interface SectionConfig {
   dashboards: DashboardConfig[];
 }
 
+export interface SeasonalSubjectItem {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  categoryLabel?: string;
+  dashboards: DashboardConfig[] | null;
+}
+
 export interface SubjectConfig {
   id: string;
   title: string;
@@ -25,9 +35,53 @@ export interface SubjectConfig {
   tagline: string;
   description: string;
   badge?: string;
-  icon: "shapes" | "tv" | "calendar" | "star";
+  icon?: string;
   sections: SectionConfig[];
 }
+
+export const SEASONAL_SUBJECTS: SeasonalSubjectItem[] = [
+  {
+    id: "genres",
+    label: "Genres",
+    title: "Genres",
+    description:
+      "Categorical breakdown of seasonal anime metrics, score distributions, popularity trends, and individual genre inspection.",
+    categoryLabel: "Genre Analytics",
+    dashboards: [
+      {
+        slug: "aggregates",
+        path: "/seasonal/genres/aggregates",
+        title: "Genre Aggregates",
+        shortTitle: "Aggregates",
+        description:
+          "Macro-level analytics comparing total anime count, average score, popularity, and trending metrics across all genres for any season.",
+        badge: "Macro Overview",
+        features: ["Genre Rankings", "Metric Comparisons", "Seasonal Filters"],
+        tags: ["Genre Rankings", "Metric Comparisons", "Seasonal Filters"],
+        icon: "chart-bar",
+      },
+      {
+        slug: "genre-animes",
+        path: "/seasonal/genres/genre-animes",
+        title: "Genre Anime Breakdown",
+        shortTitle: "Genre Animes",
+        description:
+          "Micro-level inspection of anime entries within specific genres. Features interactive search, score sorting, grid/table views, and direct AniList links.",
+        badge: "Micro Inspection",
+        features: ["Genre Filtering", "Score Distribution Chart", "Grid & Table View"],
+        tags: ["Genre Filtering", "Score Distribution Chart", "Grid & Table View"],
+        icon: "list-bullet",
+      },
+    ],
+  },
+  {
+    id: "unknown",
+    label: "Unknown",
+    title: "Unknown",
+    description: "This subject hasn't been mapped yet.",
+    dashboards: null,
+  },
+];
 
 export const SUBJECTS: SubjectConfig[] = [
   {
@@ -47,30 +101,7 @@ export const SUBJECTS: SubjectConfig[] = [
         description:
           "Categorical breakdown of seasonal anime metrics, score distributions, popularity trends, and individual genre inspection.",
         badge: "Genre Analytics",
-        dashboards: [
-          {
-            slug: "aggregates",
-            path: "/seasonal/genres/aggregates",
-            title: "Genre Aggregates",
-            shortTitle: "Aggregates",
-            description:
-              "Macro-level analytics comparing total anime count, average score, popularity, and trending metrics across all genres for any season.",
-            badge: "Macro Overview",
-            features: ["Genre Rankings", "Metric Comparisons", "Seasonal Filters"],
-            icon: "chart-bar",
-          },
-          {
-            slug: "genre-animes",
-            path: "/seasonal/genres/genre-animes",
-            title: "Genre Anime Breakdown",
-            shortTitle: "Genre Animes",
-            description:
-              "Micro-level inspection of anime entries within specific genres. Features interactive search, score sorting, grid/table views, and direct AniList links.",
-            badge: "Micro Inspection",
-            features: ["Genre Filtering", "Score Distribution Chart", "Grid & Table View"],
-            icon: "list-bullet",
-          },
-        ],
+        dashboards: SEASONAL_SUBJECTS[0].dashboards!,
       },
     ],
   },
@@ -88,4 +119,8 @@ export function getSubjectByPath(pathname: string): SubjectConfig | undefined {
 
 export function getAllSubjects(): SubjectConfig[] {
   return SUBJECTS;
+}
+
+export function getSeasonalSubjectById(id: string): SeasonalSubjectItem | undefined {
+  return SEASONAL_SUBJECTS.find((s) => s.id === id);
 }

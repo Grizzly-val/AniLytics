@@ -62,15 +62,15 @@ export const GenreScoreChart = memo(function GenreScoreChart({
   const chartHeight = Math.max(280, chartData.length * 36 + 50);
 
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 sm:p-6 shadow-xl backdrop-blur-sm space-y-4">
+    <div className="rounded-xl border border-neutral-800/80 bg-neutral-900/50 p-5 sm:p-6 shadow-xl backdrop-blur-sm space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-base sm:text-lg font-bold text-white">
             Anime Score Distribution in {decodedGenre}
           </h3>
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs text-neutral-400 font-normal">
             Comparing individual titles against the genre average of {averageScore.toFixed(2)}.
-            <span className="text-indigo-400 font-medium ml-1">
+            <span className="text-purple-300 font-medium ml-1">
               (Click any bar to jump to anime details)
             </span>
           </p>
@@ -111,11 +111,11 @@ export const GenreScoreChart = memo(function GenreScoreChart({
             />
             <ReferenceLine
               x={averageScore}
-              stroke="#ec4899"
+              stroke="#a855f7"
               strokeDasharray="4 4"
               label={{
                 value: `Avg: ${averageScore.toFixed(1)}`,
-                fill: "#ec4899",
+                fill: "#c084fc",
                 fontSize: 11,
                 position: "top",
                 offset: 8,
@@ -124,7 +124,7 @@ export const GenreScoreChart = memo(function GenreScoreChart({
             <Bar
               dataKey="score"
               name="Score"
-              fill="#6366f1"
+              fill="#c084fc"
               radius={[0, 4, 4, 0]}
               cursor="pointer"
               animationDuration={300}

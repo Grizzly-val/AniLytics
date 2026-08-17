@@ -13,7 +13,7 @@ export function GenreAnimesBreadcrumb() {
       <span>/</span>
       <span>Genres</span>
       <span>/</span>
-      <span className="text-indigo-400 font-semibold">Genre Animes</span>
+      <span className="text-purple-300 font-medium">Genre Animes</span>
     </nav>
   );
 }
