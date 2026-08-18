@@ -1,5 +1,5 @@
 # Anilytics:
-- Backend's (or the API endpoints) function will mainly be to query AniListAPI for specific data for a preset number of pages (e.g. 5 pages of Action animes, sorted by POPULARITY_DESC)
+- AniList GraphQL based live data visualizer (mainly)
 > In other words, Anilytics is an AniListAPI based dataset extractor and visualizer.
 
 ### Stack
