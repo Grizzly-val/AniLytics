@@ -60,25 +60,37 @@ export const AnimeListControls = memo(function AnimeListControls({
           <span className="font-mono text-[10px] tracking-[0.08em] uppercase text-[var(--text-low)]">
             Sort
           </span>
-          <select
-            id="anime-sort-by-select"
-            value={sortBy}
-            onChange={(e) => onSortByChange(e.target.value as SortByOption)}
-            className="appearance-none bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13px] pb-1 pt-0.5 pr-5 focus:outline-none focus:border-[var(--purple-400)] cursor-pointer transition-colors bg-no-repeat bg-[right_0_center] bg-[length:12px] [background-image:url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%236d6880%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><path%20d=%22m6%209%206%206%206-6%22/></svg>')]"
-          >
-            <option value="score" className="bg-[var(--panel)] text-[var(--text-hi)]">
-              Score
-            </option>
-            <option value="popularity" className="bg-[var(--panel)] text-[var(--text-hi)]">
-              Popularity
-            </option>
-            <option value="trending" className="bg-[var(--panel)] text-[var(--text-hi)]">
-              Trending
-            </option>
-            <option value="title" className="bg-[var(--panel)] text-[var(--text-hi)]">
-              Title
-            </option>
-          </select>
+          <div className="relative flex items-center">
+            <select
+              id="anime-sort-by-select"
+              value={sortBy}
+              onChange={(e) => onSortByChange(e.target.value as SortByOption)}
+              className="appearance-none bg-transparent border-0 border-b border-[var(--line)] text-[var(--text-hi)] text-[13px] pb-1 pt-0.5 pr-6 focus:outline-none focus:border-[var(--purple-400)] cursor-pointer transition-colors"
+            >
+              <option value="score" className="bg-[#131019] text-[#f4f2f8]">
+                Score
+              </option>
+              <option value="popularity" className="bg-[#131019] text-[#f4f2f8]">
+                Popularity
+              </option>
+              <option value="trending" className="bg-[#131019] text-[#f4f2f8]">
+                Trending
+              </option>
+              <option value="title" className="bg-[#131019] text-[#f4f2f8]">
+                Title
+              </option>
+            </select>
+            <svg
+              className="w-3 h-3 stroke-[var(--text-low)] pointer-events-none absolute right-0.5 top-1/2 -translate-y-1/2"
+              viewBox="0 0 24 24"
+              fill="none"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </div>
 
           {/* Sort Direction Toggle Button */}
           <button

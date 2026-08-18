@@ -25,11 +25,6 @@ export default function GenreAggregatesPage() {
   const [activeFormat, setActiveFormat] = useState<MediaFormat>(DEFAULT_FORMAT);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(true);
 
-  // Default metric is 'count'
-  const [metric, setMetric] = useState<
-    "count" | "average_score" | "trending" | "popularity"
-  >("count");
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (seasonInput && seasonYearInput > 0 && formatInput) {
@@ -73,8 +68,6 @@ export default function GenreAggregatesPage() {
       {isSubmitted && !loading && !error && data && (
         <GenreBarChart
           data={data}
-          metric={metric}
-          onMetricChange={setMetric}
           season={activeSeason as Season}
           seasonYear={activeYear as number}
           format={activeFormat as MediaFormat}

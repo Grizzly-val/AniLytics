@@ -268,6 +268,15 @@ export default function GenreAnimesPage({ params }: PageProps) {
     return sortedList;
   }, [enrichedAnimes, searchQuery, sortBy, sortOrder]);
 
+  const handleSortByChange = useCallback((newSortBy: SortByOption) => {
+    setSortBy(newSortBy);
+    if (newSortBy === "title") {
+      setSortOrder("asc");
+    } else {
+      setSortOrder("desc");
+    }
+  }, []);
+
   const handleToggleSortOrder = useCallback(() => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   }, []);
@@ -384,7 +393,7 @@ export default function GenreAnimesPage({ params }: PageProps) {
                   searchQuery={searchQuery}
                   onSearchQueryChange={setSearchQuery}
                   sortBy={sortBy}
-                  onSortByChange={setSortBy}
+                  onSortByChange={handleSortByChange}
                   sortOrder={sortOrder}
                   onToggleSortOrder={handleToggleSortOrder}
                   viewMode={viewMode}
