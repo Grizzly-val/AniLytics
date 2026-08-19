@@ -7,7 +7,7 @@ import httpx
 
 from redis.asyncio import Redis
 
-from src.core import get_seasonal_genres_data
+from src.core import get_seasonal_filtered_data
 from src.dependencies.services import Services
 
 from src.fetch import fetch_anilist
@@ -49,24 +49,34 @@ NOTE:
 """
 
 
-@app.get("/seasonal_genres/aggregates")
-async def get_seasonal_genres_aggregates(season: Season, seasonYear: int, format: MediaFormat, services: Services = Depends(Services)) -> dict:
-    cached_data = await services.redis.get(f"seasonal_genres:aggregates:{season}:{seasonYear}:{format}")
-    if cached_data:
-        services.logger.info(f"Retrieved cached data for seasonal genres aggregates for season {season} {seasonYear} with format {format}.")
-        return json.loads(cached_data)
-        
-    else:
-        data = await get_seasonal_genres_data(season, seasonYear, format, services)
-        return data.get("aggregates", {})
+@app.get("/seasonal")
+async def get_seasonal(season: Season, seasonYear: int, services: Services = Depends(Services)) -> dict:
+    """
+    Fetches seasonal anime data from Anilist API based on the provided season and year.
+    The data is cached in Redis for 1 hour to reduce API calls.
 
+    Args:
+        season (Season): The season for which to fetch anime data (e.g., SPRING, SUMMER, FALL, WINTER).
+        seasonYear (int): The year for which to fetch anime data.
 
-@app.get("/seasonal_genres/animes")
-async def get_seasonal_genres_animes(season: Season, seasonYear: int, format: MediaFormat, services: Services = Depends(Services)) -> dict:
-    cached_data = await services.redis.get(f"seasonal_genres:anime_list:{season}:{seasonYear}:{format}")
+        services (Services): Dependency injection for services like HTTP client, Redis client, and logger.
+
+    Returns:
+        dict: A dictionary containing the fetched seasonal anime data.
+    """
+    services.logger.info(f"Fetching seasonal anime data for {season} {seasonYear}...")
+    
+    # Check if the data is already cached in Redis
+    cached_data = await services.redis.get(f"seasonal_genres:{season}:{seasonYear}")
     if cached_data:
-        services.logger.info(f"Retrieved cached data for seasonal genres animes for season {season} {seasonYear} with format {format}.")
+        services.logger.info(f"Cache hit for seasonal_genres:{season}:{seasonYear}. Returning cached data.")
         return json.loads(cached_data)
-    else:
-        data = await get_seasonal_genres_data(season, seasonYear, format, services)
-        return data.get("animes", {})
+    
+    # If not cached, fetch the data from Anilist API
+    data = await get_seasonal_filtered_data(services=services, season=season, seasonYear=seasonYear)
+    
+    # Cache the fetched data in Redis for 1 hour
+    await services.redis.set(f"seasonal_genres:{season}:{seasonYear}", json.dumps(data), ex=3600)
+    services.logger.info(f"Cached KEY: seasonal_genres:{season}:{seasonYear} in Redis.")
+    
+    return data
