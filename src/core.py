@@ -96,6 +96,7 @@ async def get_seasonal_filtered_data(services: Services,
                 "popularity": popularity,
                 "trending": trending,
                 "siteUrl": anime["siteUrl"],
+                "genres": anime["genres"],
                 "favourites": favourites,
                 "bannerImage": anime["bannerImage"]
             })
@@ -134,6 +135,7 @@ async def get_seasonal_filtered_data(services: Services,
             "popularity": popularity,
             "trending": trending,
             "siteUrl": anime["siteUrl"],
+            "genres": anime["genres"],  
             "favourites": favourites,
             "bannerImage": anime["bannerImage"]
         })

@@ -4,38 +4,33 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/seasonal",
+        destination: "/easy-anilytics/filter-by/seasonal",
+        permanent: true,
+      },
+      {
+        source: "/seasonal/genres/:path*",
+        destination: "/easy-anilytics/filter-by/seasonal",
+        permanent: true,
+      },
+      {
         source: "/genres",
-        destination: "/seasonal",
+        destination: "/easy-anilytics/filter-by/seasonal",
         permanent: true,
       },
       {
-        source: "/genres/aggregates",
-        destination: "/seasonal/genres/aggregates",
-        permanent: true,
-      },
-      {
-        source: "/genres/genre-animes",
-        destination: "/seasonal/genres/genre-animes",
-        permanent: true,
-      },
-      {
-        source: "/genres/genre-animes/:genre*",
-        destination: "/seasonal/genres/genre-animes/:genre*",
+        source: "/genres/:path*",
+        destination: "/easy-anilytics/filter-by/seasonal",
         permanent: true,
       },
       {
         source: "/genre-data",
-        destination: "/seasonal/genres/aggregates",
+        destination: "/easy-anilytics/filter-by/seasonal",
         permanent: true,
       },
       {
-        source: "/genre-detail",
-        destination: "/seasonal/genres/genre-animes",
-        permanent: true,
-      },
-      {
-        source: "/genre-detail/:genre*",
-        destination: "/seasonal/genres/genre-animes/:genre*",
+        source: "/genre-detail/:path*",
+        destination: "/easy-anilytics/filter-by/seasonal",
         permanent: true,
       },
     ];

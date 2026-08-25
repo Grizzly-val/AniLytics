@@ -29,13 +29,13 @@ export const dashboards: Dashboard[] = SUBJECTS.flatMap((subject) =>
 
 // Get structured dashboard card models for the homepage stack
 export function getFeaturedDashboards(): DeckDashboard[] {
-  const seasonalSubject = SUBJECTS.find((s) => s.id === "seasonal");
-  if (!seasonalSubject) return [];
+  const easyAnilyticsSubject = SUBJECTS.find((s) => s.id === "easy-anilytics");
+  if (!easyAnilyticsSubject) return [];
 
-  return seasonalSubject.sections.flatMap((section) =>
+  return easyAnilyticsSubject.sections.flatMap((section) =>
     section.dashboards.map((dash) => ({
       id: dash.slug,
-      badge: dash.badge || "Macro Overview",
+      badge: dash.badge || "Macro & Micro Inspection",
       title: dash.title,
       desc: dash.description,
       tags: dash.features || [],
@@ -44,3 +44,4 @@ export function getFeaturedDashboards(): DeckDashboard[] {
     }))
   );
 }
+

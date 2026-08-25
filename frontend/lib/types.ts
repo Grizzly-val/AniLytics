@@ -9,6 +9,8 @@ export type MediaFormat =
   | "ONA"
   | "MUSIC";
 
+export type FilterCategory = "genre" | "format";
+
 export interface AnimeTitle {
   english?: string | null;
   native?: string | null;
@@ -16,10 +18,14 @@ export interface AnimeTitle {
 }
 
 export interface AnimeItem {
+  id?: number;
   title: AnimeTitle;
   score: number;
   popularity: number;
   trending: number;
+  favourites?: number;
+  genres?: string[];
+  format?: MediaFormat;
   siteUrl: string;
   bannerImage?: string | null;
   coverImage?: {
@@ -29,20 +35,26 @@ export interface AnimeItem {
   } | null;
 }
 
-export interface GenreAggregateStats {
+export interface AggregateStats {
   count: number;
   average_score: number;
   average_popularity: number;
   average_trending: number;
+  average_favourites?: number;
 }
 
-export type GenreAggregatesResponse = Record<string, GenreAggregateStats>;
+export interface CategoryData {
+  aggregates: Record<string, AggregateStats>;
+  animes: Record<string, AnimeItem[]>;
+}
 
+export interface SeasonalDataResponse {
+  formats: CategoryData;
+  genres: CategoryData;
+}
+
+// Backwards compatibility types
+export type GenreAggregateStats = AggregateStats;
+export type GenreAggregatesResponse = Record<string, AggregateStats>;
 export type GenreAnimesResponse = Record<string, AnimeItem[]>;
 
-// Deprecated unified interface kept for compatibility
-export interface GenreStats extends GenreAggregateStats {
-  animes?: AnimeItem[];
-}
-
-export type GenreDataResponse = GenreAggregatesResponse;

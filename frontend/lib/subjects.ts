@@ -18,7 +18,7 @@ export interface SectionConfig {
   dashboards: DashboardConfig[];
 }
 
-export interface SeasonalSubjectItem {
+export interface EasyAnilyticsSubjectItem {
   id: string;
   label: string;
   title: string;
@@ -39,37 +39,25 @@ export interface SubjectConfig {
   sections: SectionConfig[];
 }
 
-export const SEASONAL_SUBJECTS: SeasonalSubjectItem[] = [
+export const EASY_ANILYTICS_SUBJECTS: EasyAnilyticsSubjectItem[] = [
   {
-    id: "genres",
-    label: "Genres",
-    title: "Genres",
+    id: "filter-by",
+    label: "Filter by",
+    title: "Filter by",
     description:
-      "Categorical breakdown of seasonal anime metrics, score distributions, popularity trends, and individual genre inspection.",
-    categoryLabel: "Genre Analytics",
+      "Categorical breakdown of seasonal anime metrics, score distributions, and individual entry inspection by genre or format.",
+    categoryLabel: "Filter Analytics",
     dashboards: [
       {
-        slug: "aggregates",
-        path: "/seasonal/genres/aggregates",
-        title: "Genre Aggregates",
-        shortTitle: "Aggregates",
+        slug: "seasonal",
+        path: "/easy-anilytics/filter-by/seasonal",
+        title: "Seasonal Analytics",
+        shortTitle: "Seasonal",
         description:
-          "Macro-level analytics comparing total anime count, average score, popularity, and trending metrics across all genres for any season.",
-        badge: "Macro Overview",
-        features: ["Genre Rankings", "Metric Comparisons", "Seasonal Filters"],
-        tags: ["Genre Rankings", "Metric Comparisons", "Seasonal Filters"],
-        icon: "chart-bar",
-      },
-      {
-        slug: "genre-animes",
-        path: "/seasonal/genres/genre-animes",
-        title: "Genre Anime Breakdown",
-        shortTitle: "Genre Animes",
-        description:
-          "Micro-level inspection of anime entries within specific genres. Features interactive search, score sorting, grid/table views, and direct AniList links.",
-        badge: "Micro Inspection",
-        features: ["Genre Filtering", "Score Distribution Chart", "Grid & Table View"],
-        tags: ["Genre Filtering", "Score Distribution Chart", "Grid & Table View"],
+          "Real-time seasonal anime metrics and breakdowns, filterable by genre or format. Interactive search, score sorting, grid/table views, and direct AniList links.",
+        badge: "Macro & Micro Inspection",
+        features: ["Season & Year Controls", "Genre & Format Filtering", "Score Distribution Chart", "Grid & Table View"],
+        tags: ["Season & Year Controls", "Genre & Format Filtering", "Score Distribution Chart", "Grid & Table View"],
         icon: "list-bullet",
       },
     ],
@@ -83,25 +71,29 @@ export const SEASONAL_SUBJECTS: SeasonalSubjectItem[] = [
   },
 ];
 
+// Backwards compatibility alias
+export const SEASONAL_SUBJECTS = EASY_ANILYTICS_SUBJECTS;
+export type SeasonalSubjectItem = EasyAnilyticsSubjectItem;
+
 export const SUBJECTS: SubjectConfig[] = [
   {
-    id: "seasonal",
-    title: "Seasonal Analytics",
-    navLabel: "Seasonal Analytics",
-    path: "/seasonal",
-    tagline: "Comprehensive analytics for anime released across seasonal periods",
+    id: "easy-anilytics",
+    title: "Easy-AniLytics",
+    navLabel: "Easy-AniLytics",
+    path: "/easy-anilytics/filter-by",
+    tagline: "Streamlined anime analytics filtered by genres and media formats",
     description:
-      "Explore real-time seasonal data from AniList, organized into categorical sections such as genre aggregates, popularity metrics, and anime breakdowns.",
+      "Explore real-time seasonal data from AniList, organized into categorical sections filterable by genre or format.",
     badge: "Active Subject",
     icon: "calendar",
     sections: [
       {
-        id: "genres",
-        title: "Genres Dashboards",
+        id: "filter-by",
+        title: "Filter by Dashboards",
         description:
-          "Categorical breakdown of seasonal anime metrics, score distributions, popularity trends, and individual genre inspection.",
-        badge: "Genre Analytics",
-        dashboards: SEASONAL_SUBJECTS[0].dashboards!,
+          "Categorical breakdown of seasonal anime metrics, score distributions, and entry inspection.",
+        badge: "Filter Analytics",
+        dashboards: EASY_ANILYTICS_SUBJECTS[0].dashboards!,
       },
     ],
   },
@@ -121,6 +113,9 @@ export function getAllSubjects(): SubjectConfig[] {
   return SUBJECTS;
 }
 
-export function getSeasonalSubjectById(id: string): SeasonalSubjectItem | undefined {
-  return SEASONAL_SUBJECTS.find((s) => s.id === id);
+export function getEasyAnilyticsSubjectById(id: string): EasyAnilyticsSubjectItem | undefined {
+  return EASY_ANILYTICS_SUBJECTS.find((s) => s.id === id);
 }
+
+export const getSeasonalSubjectById = getEasyAnilyticsSubjectById;
+

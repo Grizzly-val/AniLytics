@@ -32,12 +32,12 @@ export default function Navbar() {
         <div className="w-[1px] h-[18px] bg-[var(--line-soft)] hidden sm:block" />
 
         <Link
-          href="/seasonal"
+          href="/easy-anilytics/filter-by"
           className={`nav-link-item ${
-            pathname.startsWith("/seasonal") ? "text-[var(--text-hi)] font-semibold" : ""
+            pathname.startsWith("/easy-anilytics") ? "text-[var(--text-hi)] font-semibold" : ""
           }`}
         >
-          <span>Seasonal Analytics</span>
+          <span>Easy-AniLytics</span>
           <svg
             viewBox="0 0 24 24"
             fill="none"
