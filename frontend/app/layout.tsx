@@ -36,7 +36,7 @@ export default function RootLayout({
       lang="en"
       className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-[var(--bg)] text-[var(--text-hi)] font-body selection:bg-[var(--purple-500)] selection:text-white">
+      <body className="min-h-full flex flex-col bg-anilytics-bg text-anilytics-text-hi font-body selection:bg-anilytics-purple-500 selection:text-white">
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
       </body>

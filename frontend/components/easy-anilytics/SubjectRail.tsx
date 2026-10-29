@@ -76,7 +76,7 @@ export function SubjectRail({
   return (
     <aside
       aria-label="Seasonal Analytics Subject Navigation"
-      className="relative lg:fixed lg:left-0 lg:top-[79px] lg:bottom-0 z-30 pointer-events-none mb-6 lg:mb-0"
+      className="relative lg:fixed lg:left-0 lg:top-navbar lg:bottom-0 z-30 pointer-events-none mb-6 lg:mb-0"
     >
       <div
         ref={railRef}
@@ -89,18 +89,18 @@ export function SubjectRail({
         {/* Thin Vertical Rail Line Accent (Desktop) */}
         <div
           aria-hidden="true"
-          className={`hidden lg:block absolute left-0 top-0 bottom-0 w-[1.5px] transition-all duration-500 ${
+          className={`hidden lg:block absolute left-0 top-0 bottom-0 w-0.375 transition-all duration-500 ${
             isAwake
-              ? "bg-[linear-gradient(180deg,transparent_0%,rgba(178,133,251,0.5)_12%,rgba(178,133,251,0.5)_88%,transparent_100%)]"
-              : "bg-[linear-gradient(180deg,transparent_0%,var(--line)_12%,var(--line)_88%,transparent_100%)]"
+              ? "bg-gradient-rail-active"
+              : "bg-gradient-rail-idle"
           }`}
         />
 
         {/* Rail Title Header & Info Toggle */}
         <div className="relative flex items-center gap-2 mb-3 lg:mb-5">
           <span
-            className={`font-mono text-[9.5px] lg:text-[9.5px] tracking-[0.1em] uppercase text-[var(--text-low)] whitespace-nowrap transition-all duration-450 ease-[cubic-bezier(.65,0,.35,1)] ${
-              isAwake ? "opacity-85 text-[10.5px]" : "opacity-40 text-[9.5px]"
+            className={`font-mono text-badge lg:text-badge tracking-widest-lg uppercase text-anilytics-text-low whitespace-nowrap transition-all duration-450 ease-custom ${
+              isAwake ? "opacity-85 text-label-sm" : "opacity-40 text-badge"
             }`}
           >
             Easy-AniLytics
@@ -115,7 +115,7 @@ export function SubjectRail({
               onMouseLeave={() => setIsInfoOpen(false)}
               aria-label="About Easy-AniLytics subjects"
               aria-expanded={isInfoOpen}
-              className="w-[14px] h-[14px] rounded-full border border-[var(--line)] flex items-center justify-center font-mono text-[9px] text-[var(--text-low)] cursor-help transition-all duration-250 hover:border-[var(--purple-400)] hover:text-[var(--purple-300)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--purple-400)]"
+              className="w-3.5 h-3.5 rounded-full border border-anilytics-line flex items-center justify-center font-mono text-3xs text-anilytics-text-low cursor-help transition-all duration-250 hover:border-anilytics-purple-400 hover:text-anilytics-purple-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-anilytics-purple-400"
             >
               ?
             </button>
@@ -123,7 +123,7 @@ export function SubjectRail({
             {/* Info Popover */}
             <div
               role="tooltip"
-              className={`absolute left-0 lg:left-[calc(100%+14px)] top-[calc(100%+8px)] lg:top-1/2 lg:-translate-y-1/2 w-[240px] bg-[linear-gradient(160deg,var(--panel-2),var(--panel))] border border-[var(--line)] rounded-xl p-3.5 sm:p-4 text-[12.5px] leading-[1.55] text-[var(--text-mid)] shadow-[0_20px_40px_-12px_rgba(0,0,0,0.6)] z-40 transition-all duration-280 ease-[cubic-bezier(.65,0,.35,1)] ${
+              className={`absolute left-0 lg:left-full lg:ml-3.5 top-full mt-2 lg:top-1/2 lg:-translate-y-1/2 w-60 bg-gradient-card-surface border border-anilytics-line rounded-xl p-3.5 sm:p-4 text-body-sm leading-normal-md text-anilytics-text-mid shadow-panel z-40 transition-all duration-280 ease-custom ${
                 isInfoOpen
                   ? "opacity-100 translate-x-0 lg:translate-x-0 pointer-events-auto"
                   : "opacity-0 -translate-x-2 lg:-translate-x-2 pointer-events-none"
@@ -145,7 +145,7 @@ export function SubjectRail({
                 type="button"
                 onClick={() => onSelectSubject(sub.id)}
                 aria-current={isActive ? "page" : undefined}
-                className={`group/item flex items-center gap-2.25 py-1.5 pr-2.5 whitespace-nowrap cursor-pointer transition-all duration-400 ease-[cubic-bezier(.65,0,.35,1)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--purple-400)] rounded-sm ${
+                className={`group/item flex items-center gap-2.25 py-1.5 pr-2.5 whitespace-nowrap cursor-pointer transition-all duration-400 ease-custom focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-anilytics-purple-400 rounded-sm ${
                   isAwake
                     ? isActive
                       ? "opacity-100"
@@ -157,23 +157,23 @@ export function SubjectRail({
               >
                 {/* Item Dot */}
                 <span
-                  className={`w-[5px] h-[5px] rounded-full shrink-0 transition-all duration-250 ${
+                  className={`w-1.25 h-1.25 rounded-full shrink-0 transition-all duration-250 ${
                     isActive
-                      ? "bg-[var(--purple-400)] shadow-[0_0_8px_rgba(178,133,251,0.7)]"
-                      : "bg-[var(--line)] group-hover/item:bg-[var(--purple-400)]"
+                      ? "bg-anilytics-purple-400 shadow-glow-sm"
+                      : "bg-anilytics-line group-hover/item:bg-anilytics-purple-400"
                   }`}
                 />
 
                 {/* Item Label */}
                 <span
-                  className={`font-display transition-all duration-400 ease-[cubic-bezier(.65,0,.35,1)] ${
+                  className={`font-display transition-all duration-400 ease-custom ${
                     isAwake
-                      ? "text-[15px] group-hover/item:text-[16px]"
-                      : "text-[11px] group-hover/item:text-[16px]"
+                      ? "text-body-lg group-hover/item:text-base"
+                      : "text-label group-hover/item:text-base"
                   } ${
                     isActive
-                      ? "text-[var(--text-hi)] font-medium"
-                      : "text-[var(--text-mid)] group-hover/item:text-[var(--purple-300)]"
+                      ? "text-anilytics-text-hi font-medium"
+                      : "text-anilytics-text-mid group-hover/item:text-anilytics-purple-300"
                   }`}
                 >
                   {sub.label}

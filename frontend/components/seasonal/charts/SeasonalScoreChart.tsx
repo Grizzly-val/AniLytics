@@ -73,7 +73,7 @@ export const SeasonalScoreChart = memo(function SeasonalScoreChart({
       nameKey="name"
       yAxisWidth={180}
       title={(metricConfig) => (
-        <h3 className="font-display font-medium text-[17px] text-[var(--text-hi)]">
+        <h3 className="font-display font-medium text-title-sm text-anilytics-text-hi">
           Anime <span style={{ color: metricConfig.color }}>{metricConfig.label}</span> Distribution
         </h3>
       )}
@@ -84,7 +84,7 @@ export const SeasonalScoreChart = memo(function SeasonalScoreChart({
             {metricConfig.avgFormat ? metricConfig.avgFormat(averageValue) : averageValue.toFixed(1)}
           </span>
           .{" "}
-          <span className="text-[var(--purple-300)] font-medium">
+          <span className="text-anilytics-purple-300 font-medium">
             (Click any bar to jump to its card below)
           </span>
         </>

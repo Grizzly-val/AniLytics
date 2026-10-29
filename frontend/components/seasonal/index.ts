@@ -1,30 +1,69 @@
-export { AnimeCard } from "./AnimeCard";
-export { AnimeGrid } from "./AnimeGrid";
-export type { ProcessedAnime } from "./AnimeGrid";
-export { AnimeListControls } from "./AnimeListControls";
+// Anime List & Display
+export {
+  AnimeCard,
+  AnimeGrid,
+  AnimeListControls,
+  AnimeTable,
+  SeasonalAnimeSection,
+} from "./anime";
 export type {
+  ProcessedAnime,
   SortByOption,
   SortOrderOption,
   ViewModeOption,
-} from "./AnimeListControls";
-export { AnimeTable } from "./AnimeTable";
+  SeasonalAnimeSectionProps,
+} from "./anime";
 
-// Seasonal Headers, Stats & Highlights
-export { SeasonalHeader } from "./SeasonalHeader";
-export { SeasonalHighlights } from "./SeasonalHighlights";
-export { SeasonalKpiCards } from "./SeasonalKpiCards";
-export { SeasonalAggregatesDrawer } from "./SeasonalAggregatesDrawer";
+// Seasonal Controls
+export {
+  SeasonYearControls,
+  SeasonalCategorySelect,
+  SeasonalAggregatesButton,
+  SeasonalControlsBar,
+} from "./controls";
+export type {
+  SeasonYearControlsProps,
+  SeasonalCategorySelectProps,
+  SeasonalAggregatesButtonProps,
+  SeasonalControlsBarProps,
+} from "./controls";
 
-// UI states & sub-components
-export { SeasonalBreadcrumb } from "./SeasonalBreadcrumb";
-export { SeasonalBarClickHeader } from "./SeasonalBarClickHeader";
-export { SeasonalUnsubmittedState } from "./SeasonalUnsubmittedState";
-export { SeasonalLoadingState } from "./SeasonalLoadingState";
-export { SeasonalErrorState  } from "./SeasonalErrorState";
-export { SeasonalPromptState } from "./SeasonalPromptState";
-export { SeasonalNoDataState } from "./SeasonalNoDataState";
+// Seasonal Header & Navigation
+export {
+  SeasonalHeader,
+  SeasonalBreadcrumb,
+} from "./header";
+export type {
+  SeasonalHeaderProps,
+} from "./header";
+
+// Stats, KPIs & Highlights
+export {
+  SeasonalHighlights,
+  SeasonalKpiCards,
+  SeasonalAggregatesDrawer,
+} from "./stats";
+export type {
+  HighlightAnimeEntry,
+  SeasonalHighlightsProps,
+  AwardInfo,
+  SeasonalAggregatesDrawerProps,
+  AggregateChartItem,
+} from "./stats";
+
+// UI Feedback States
+export {
+  SeasonalUnsubmittedState,
+  SeasonalLoadingState,
+  SeasonalErrorState,
+  SeasonalPromptState,
+  SeasonalNoDataState,
+} from "./states";
 
 // Charts
-export { SeasonalScoreChart } from "./charts/SeasonalScoreChart";
-export type { ScoreChartItem } from "./charts/SeasonalScoreChart";
-
+export {
+  SeasonalScoreChart,
+} from "./charts";
+export type {
+  ScoreChartItem,
+} from "./charts";  

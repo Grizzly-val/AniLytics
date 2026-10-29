@@ -16,12 +16,12 @@ export const AnimeTable = memo(function AnimeTable({
 }: AnimeTableProps) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse min-w-[640px] text-left">
+      <table className="w-full border-collapse min-w-160 text-left">
         <thead>
-          <tr className="border-b border-[var(--line-soft)] font-mono text-[10px] tracking-[0.06em] uppercase text-[var(--text-low)] font-medium">
+          <tr className="border-b border-anilytics-line-soft font-mono text-2xs tracking-wider-md uppercase text-anilytics-text-low font-medium">
             <th className="px-3.5 py-0 pb-3">#</th>
             <th className="px-3.5 py-0 pb-3">Title</th>
-            <th className="px-3.5 py-0 pb-3 max-w-[170px]">Genres</th>
+            <th className="px-3.5 py-0 pb-3 max-w-42.5">Genres</th>
             <th className="px-3.5 py-0 pb-3 text-right">Score</th>
             <th className="px-3.5 py-0 pb-3 text-right">Members</th>
             <th className="px-3.5 py-0 pb-3 text-right">Trending</th>
@@ -29,7 +29,7 @@ export const AnimeTable = memo(function AnimeTable({
             <th className="px-3.5 py-0 pb-3 text-right">Action</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-[var(--line-soft)]">
+        <tbody className="divide-y divide-anilytics-line-soft">
           {items.map((item, idx) => {
             const isHighlighted = highlightedTitle === item.primaryTitle;
             const domId = getAnimeDomId(item.primaryTitle);
@@ -46,47 +46,47 @@ export const AnimeTable = memo(function AnimeTable({
                 duration={400}
                 className={`group transition-all duration-300 ${
                   isHighlighted
-                    ? "bg-[rgba(178,133,251,0.16)]"
-                    : "hover:bg-[rgba(255,255,255,0.02)]"
+                    ? "bg-anilytics-purple-light-16"
+                    : "hover:bg-anilytics-white-2"
                 }`}
               >
                 {/* Rank Column */}
-                <td className="px-3.5 py-3 font-mono text-[11px] text-[var(--text-low)] align-middle">
+                <td className="px-3.5 py-3 font-mono text-label text-anilytics-text-low align-middle">
                   {rankStr}
                 </td>
 
                 {/* Title Column */}
                 <td className="px-3.5 py-3 align-middle">
-                  <div className="font-display font-medium text-[13.5px] text-[var(--text-hi)] mb-0.5 line-clamp-1">
+                  <div className="font-display font-medium text-body text-anilytics-text-hi mb-0.5 line-clamp-1">
                     {item.primaryTitle}
                   </div>
                   {item.secondaryTitle && (
-                    <div className="text-[11px] text-[var(--text-low)] line-clamp-1">
+                    <div className="text-label text-anilytics-text-low line-clamp-1">
                       {item.secondaryTitle}
                     </div>
                   )}
                 </td>
 
                 {/* Genres Column */}
-                <td className="px-3.5 py-3 align-middle max-w-[170px]">
+                <td className="px-3.5 py-3 align-middle max-w-42.5">
                   {item.anime?.genres && item.anime?.genres.length > 0 ? (
                     <div className="flex items-center gap-1 overflow-hidden truncate">
                       {item.anime.genres.slice(0, 2).map((g) => (
                         <span
                           key={g}
-                          className="px-1.5 py-0.5 rounded text-[9.5px] font-mono tracking-wide bg-purple-500/10 border border-purple-500/20 text-purple-300 shrink-0"
+                          className="px-1.5 py-0.5 rounded text-badge font-mono tracking-wide bg-purple-500/10 border border-purple-500/20 text-purple-300 shrink-0"
                         >
                           {g}
                         </span>
                       ))}
                       {item.anime?.genres.length > 2 && (
-                        <span className="px-1 py-0.5 rounded text-[9px] font-mono text-[var(--text-low)] bg-[var(--panel-2)] border border-[var(--line-soft)] shrink-0">
+                        <span className="px-1 py-0.5 rounded text-3xs font-mono text-anilytics-text-low bg-anilytics-panel-2 border border-anilytics-line-soft shrink-0">
                           +{item.anime?.genres.length - 2}
                         </span>
                       )}
                     </div>
                   ) : (
-                    <span className="text-[11px] text-[var(--text-low)] font-mono">-</span>
+                    <span className="text-label text-anilytics-text-low font-mono">-</span>
                   )}
                 </td>
 
@@ -99,17 +99,17 @@ export const AnimeTable = memo(function AnimeTable({
                 </td>
 
                 {/* Members Column */}
-                <td className="px-3.5 py-3 text-right font-mono text-xs text-[#93b9f2] align-middle">
+                <td className="px-3.5 py-3 text-right font-mono text-xs text-anilytics-metric-blue align-middle">
                   {item.anime.popularity.toLocaleString("en-US")}
                 </td>
 
                 {/* Trending Column */}
-                <td className="px-3.5 py-3 text-right font-mono text-xs text-[#f2a48d] align-middle">
+                <td className="px-3.5 py-3 text-right font-mono text-xs text-anilytics-metric-peach align-middle">
                   {item.anime.trending}
                 </td>
 
                 {/* Favourites Column */}
-                <td className="px-3.5 py-3 text-right font-mono text-xs text-[#f472b6] align-middle">
+                <td className="px-3.5 py-3 text-right font-mono text-xs text-anilytics-metric-pink align-middle">
                   {item.anime.favourites !== undefined ? item.anime.favourites.toLocaleString("en-US") : "-"}
                 </td>
 
@@ -119,7 +119,7 @@ export const AnimeTable = memo(function AnimeTable({
                     href={item.anime.siteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.25 group-hover:gap-2 font-medium text-xs text-[var(--purple-300)] transition-all"
+                    className="inline-flex items-center gap-1.25 group-hover:gap-2 font-medium text-xs text-anilytics-purple-300 transition-all"
                   >
                     <span>AniList</span>
                     <svg
@@ -129,7 +129,7 @@ export const AnimeTable = memo(function AnimeTable({
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="w-[11px] h-[11px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                      className="w-2.75 h-2.75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
                     >
                       <path d="M7 17 17 7" />
                       <path d="M7 7h10v10" />

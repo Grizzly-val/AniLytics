@@ -58,9 +58,9 @@ export function RotatingMetaText() {
   return (
     <div className="overflow-hidden py-0.5 pr-4 -ml-0.5 select-none">
       <div className="flex items-center gap-2.25">
-        <span className="w-[5px] h-[5px] rounded-full bg-[var(--purple-400)] shrink-0 animate-pulse-dot" />
+        <span className="w-1.25 h-1.25 rounded-full bg-anilytics-purple-400 shrink-0 animate-pulse-dot" />
         <span
-          className="inline-block font-mono text-[12px] tracking-[0.02em] text-[var(--text-low)] whitespace-nowrap"
+          className="inline-block font-mono text-body-xs tracking-wide-sm text-anilytics-text-low whitespace-nowrap"
           style={getTextStyle()}
         >
           {stats[index]}

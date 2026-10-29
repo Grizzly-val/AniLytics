@@ -161,12 +161,12 @@ function HorizontalBarChartInner<T extends Record<string, any> = Record<string, 
         const displayLabel = item[nameKey] || "";
 
         return (
-          <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-xl p-[9px_11px] shadow-2xl z-50 pointer-events-none min-w-[150px] max-w-[240px]">
-            <span className="block font-mono text-[10.5px] text-[var(--text-hi)] truncate mb-1">
+          <div className="bg-gradient-to-br from-anilytics-panel-2 to-anilytics-panel border border-anilytics-line rounded-xl p-tooltip-sm shadow-2xl z-50 pointer-events-none min-w-37.5 max-w-60">
+            <span className="block font-mono text-label-sm text-anilytics-text-hi truncate mb-1">
               {displayLabel}
             </span>
             <span
-              className="block font-mono text-[10px] tracking-[0.05em] uppercase"
+              className="block font-mono text-2xs tracking-wider-sm uppercase"
               style={{ color: metricConfig.color }}
             >
               {metricConfig.valueLabel || metricConfig.label} · {formatValue(numVal)}
@@ -181,7 +181,7 @@ function HorizontalBarChartInner<T extends Record<string, any> = Record<string, 
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex h-48 items-center justify-center rounded-2xl border border-[var(--line)] bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] p-6 text-[var(--text-mid)] font-mono text-xs">
+      <div className="flex h-48 items-center justify-center rounded-card-lg border border-anilytics-line bg-gradient-to-br from-anilytics-panel-2 to-anilytics-panel p-6 text-anilytics-text-mid font-mono text-xs">
         {emptyMessage}
       </div>
     );
@@ -193,7 +193,7 @@ function HorizontalBarChartInner<T extends Record<string, any> = Record<string, 
     typeof title === "function"
       ? title(metricConfig)
       : title || (
-          <h3 className="font-display font-medium text-[17px] text-[var(--text-hi)]">
+          <h3 className="font-display font-medium text-title-sm text-anilytics-text-hi">
             Distribution by{" "}
             <span style={{ color: metricConfig.color }}>{metricConfig.label}</span>
           </h3>
@@ -205,12 +205,12 @@ function HorizontalBarChartInner<T extends Record<string, any> = Record<string, 
       : subtitle;
 
   return (
-    <div className="bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] border border-[var(--line)] rounded-2xl p-[24px_24px_20px] sm:p-[30px_32px_26px] mb-9 shadow-2xl space-y-4">
+    <div className="bg-gradient-to-br from-anilytics-panel-2 to-anilytics-panel border border-anilytics-line rounded-card-lg p-chart-card sm:p-chart-card-lg mb-9 shadow-2xl space-y-4">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           {renderedTitle}
           {renderedSubtitle && (
-            <p className="text-[12.5px] text-[var(--text-mid)] mt-1">
+            <p className="text-body-sm text-anilytics-text-mid mt-1">
               {renderedSubtitle}
             </p>
           )}
@@ -218,21 +218,21 @@ function HorizontalBarChartInner<T extends Record<string, any> = Record<string, 
 
         {/* Metric Selector (if multiple metrics defined) */}
         {metrics.length > 1 && (
-          <div className="flex items-center gap-2 pl-4 border-l border-[var(--line)] self-center">
-            <span className="font-mono text-[9px] tracking-[0.08em] uppercase text-[var(--text-low)]">
+          <div className="flex items-center gap-2 pl-4 border-l border-anilytics-line self-center">
+            <span className="font-mono text-3xs tracking-widest-sm uppercase text-anilytics-text-low">
               Metric
             </span>
             <select
               value={currentMetricKey}
               onChange={(e) => handleMetricSelect(e.target.value)}
               aria-label="Chart metric"
-              className="appearance-none bg-transparent border-0 text-[var(--text-mid)] font-mono text-[11px] tracking-[0.03em] pr-5 py-1 focus:outline-none focus:text-[var(--text-hi)] cursor-pointer transition-colors bg-no-repeat bg-[right_2px_center] bg-[length:10px] [background-image:url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22%236d6880%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><path%20d=%22m6%209%206%206%206-6%22/></svg>')]"
+              className="appearance-none bg-transparent border-0 text-anilytics-text-mid font-mono text-label tracking-wide-md pr-5 py-1 focus:outline-none focus:text-anilytics-text-hi cursor-pointer transition-colors bg-select-chevron-sm"
             >
               {metrics.map((m) => (
                 <option
                   key={m.key}
                   value={m.key}
-                  className="bg-[var(--panel-2)] text-[var(--text-hi)]"
+                  className="bg-anilytics-panel-2 text-anilytics-text-hi"
                 >
                   {m.label}
                 </option>

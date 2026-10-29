@@ -7,14 +7,14 @@ export default function HomePage() {
   const dashboards = getFeaturedDashboards();
 
   return (
-    <div className="flex-1 flex flex-col justify-center max-w-[1400px] mx-auto w-full px-6 lg:px-12 py-10 lg:py-0">
-      <main className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-10 min-h-[calc(100vh-79px)]">
+    <div className="flex-1 flex flex-col justify-center max-w-350 mx-auto w-full px-6 lg:px-12 py-10 lg:py-0">
+      <main className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-10 min-h-hero-screen">
         {/* Left Panel */}
-        <div className="relative z-10 flex flex-col items-start max-w-[520px] pl-4 sm:pl-[26px]">
+        <div className="relative z-10 flex flex-col items-start max-w-130 pl-4 sm:pl-6.5">
           {/* Subtle Breathing Grid Patch */}
           <div
             aria-hidden="true"
-            className="absolute w-[360px] h-[360px] sm:w-[620px] sm:h-[620px] -left-12 -top-40 pointer-events-none -z-10 animate-grid-breathe origin-center"
+            className="absolute w-90 h-90 sm:w-155 sm:h-155 -left-12 -top-40 pointer-events-none -z-10 animate-grid-breathe origin-center"
             style={{
               backgroundImage: `
                 linear-gradient(rgba(178,133,251,0.5) 1px, transparent 1px),
@@ -31,19 +31,19 @@ export default function HomePage() {
           {/* Thin Vertical Editorial Accent Line */}
           <div
             aria-hidden="true"
-            className="absolute left-0 top-[4px] w-[1.5px] h-[186px] bg-[linear-gradient(180deg,var(--purple-400)_0%,rgba(124,58,237,0.25)_55%,transparent_100%)] -z-10"
+            className="absolute left-0 top-1 w-0.375 h-46.5 bg-gradient-accent-line -z-10"
           />
 
           {/* Rotating Eyebrow */}
           <RotatingEyebrow />
 
           {/* Main Gradient Headline */}
-          <h1 className="font-display font-light text-[48px] sm:text-[clamp(56px,7vw,92px)] leading-[0.98] tracking-[-0.03em] bg-[linear-gradient(180deg,#ffffff_0%,var(--purple-300)_120%)] bg-clip-text text-transparent mb-5.5 select-none">
+          <h1 className="font-display font-light text-display-sm sm:text-hero-display leading-hero tracking-tightest bg-gradient-hero-text bg-clip-text text-transparent mb-5.5 select-none">
             Ani<strong className="font-medium text-transparent">Lytics</strong>
           </h1>
 
           {/* Subtext */}
-          <p className="font-body font-normal text-[15.5px] sm:text-[16.5px] leading-[1.65] text-[var(--text-mid)] max-w-[400px] mb-9">
+          <p className="font-body font-normal text-body-xl sm:text-title-xs leading-loose-sm text-anilytics-text-mid max-w-100 mb-9">
             Anime analytics, one module at a time.
           </p>
 

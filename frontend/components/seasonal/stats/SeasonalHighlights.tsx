@@ -30,19 +30,19 @@ const AWARD_CONFIGS: Record<"score" | "popularity" | "favourites", Omit<AwardInf
     title: "Top Performer",
     subtitle: "Highest Scored",
     badgeClass: "bg-emerald-500/15 border-emerald-500/35 text-emerald-300",
-    borderClass: "border-t-[rgba(115,210,150,0.34)] hover:border-[rgba(115,210,150,0.48)]",
+    borderClass: "border-t-anilytics-metric-green-34 hover:border-anilytics-metric-green-48",
   },
   popularity: {
     title: "Attention Gatherer",
     subtitle: "Most Popular",
     badgeClass: "bg-blue-500/15 border-blue-500/35 text-blue-300",
-    borderClass: "border-t-[rgba(147,185,242,0.32)] hover:border-[rgba(147,185,242,0.48)]",
+    borderClass: "border-t-anilytics-metric-blue-32 hover:border-anilytics-metric-blue-48",
   },
   favourites: {
     title: "Fan Favorite",
     subtitle: "Most Favourites",
     badgeClass: "bg-rose-500/15 border-rose-500/35 text-rose-300",
-    borderClass: "border-t-[rgba(244,114,182,0.32)] hover:border-[rgba(244,114,182,0.48)]",
+    borderClass: "border-t-anilytics-metric-pink-32 hover:border-anilytics-metric-pink-48",
   },
 };
 
@@ -107,18 +107,18 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
       : "grid-cols-1 md:grid-cols-3";
 
   return (
-    <div className={`grid ${gridLayoutClass} gap-[18px] mb-9`}>
+    <div className={`grid ${gridLayoutClass} gap-4.5 mb-9`}>
       {consolidatedCards.map((card, index) => {
         const primaryAward = card.awards[0];
-        const borderClass = primaryAward?.borderClass || "border-t-[var(--line)]";
+        const borderClass = primaryAward?.borderClass || "border-t-anilytics-line";
 
         return (
           <ScrollReveal key={card.key} direction="up" delay={200 + index * 40} duration={500}>
             <div
-              className={`group rounded-2xl border border-[var(--line)] border-t-2 ${borderClass} bg-gradient-to-br from-[var(--panel-2)] to-[var(--panel)] relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_-28px_rgba(124,58,237,0.3)] flex flex-col justify-between`}
+              className={`group rounded-card-lg border border-anilytics-line border-t-2 ${borderClass} bg-gradient-to-br from-anilytics-panel-2 to-anilytics-panel relative overflow-hidden h-full transition-all duration-300 hover:-translate-y-0.5 hover:shadow-highlight-hover flex flex-col justify-between`}
             >
               {/* Banner Header */}
-              <div className="h-[132px] w-full relative overflow-hidden bg-[var(--panel-2)] border-b border-[var(--line-soft)] shrink-0">
+              <div className="h-banner w-full relative overflow-hidden bg-anilytics-panel-2 border-b border-anilytics-line-soft shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={getAnimeBannerImage(card.anime)}
@@ -128,25 +128,25 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                       e.currentTarget.src = ANIME_PLACEHOLDER_BANNER;
                     }
                   }}
-                  className="w-full h-full object-cover object-center saturate-[0.88] contrast-[0.96] opacity-78 scale-[1.015] transition-all duration-700 ease-[cubic-bezier(.65,0,.35,1)] group-hover:scale-[1.045] group-hover:opacity-92 group-hover:saturate-100 group-hover:contrast-100 will-change-transform"
+                  className="w-full h-full object-cover object-center opacity-78 scale-101 transition-all duration-700 ease-custom group-hover:scale-105 group-hover:opacity-92 group-hover:contrast-100 will-change-transform"
                 />
-                <span className="absolute left-4 bottom-3.25 z-[5] font-mono text-[9px] tracking-[0.08em] uppercase text-[rgba(244,242,248,0.64)]">
+                <span className="absolute left-4 bottom-3.25 z-5 font-mono text-3xs tracking-widest-sm uppercase text-anilytics-text-muted-64">
                   banner / preview
                 </span>
               </div>
 
               {/* Unclipped Gradient Shadow Overlay */}
-              <div className="absolute top-0 left-0 right-0 h-[175px] bg-gradient-to-b from-[rgba(8,7,12,0.08)] via-[rgba(8,7,12,0.45)] to-transparent pointer-events-none z-10" />
+              <div className="absolute top-0 left-0 right-0 h-scrim bg-gradient-card-scrim pointer-events-none z-10" />
 
               {/* Content Body */}
-              <div className="p-[18px_20px_20px] flex flex-col justify-between flex-1 relative z-20">
+              <div className="p-highlight-card flex flex-col justify-between flex-1 relative z-20">
                 <div>
                   {/* Consolidated Awards Badges */}
                   <div className="flex flex-wrap items-center gap-1.5 mb-3">
                     {card.awards.map((award) => (
                       <div
                         key={award.id}
-                        className={`inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] uppercase px-2.5 py-1 rounded-md border ${award.badgeClass}`}
+                        className={`inline-flex items-center gap-1.5 font-mono text-2xs tracking-wider-md uppercase px-2.5 py-1 rounded-md border ${award.badgeClass}`}
                       >
                         <span className="font-semibold">{award.title}</span>
                         <span className="opacity-60">•</span>
@@ -155,10 +155,10 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                     ))}
                   </div>
 
-                  <h3 className="font-display font-medium text-[19px] text-[var(--text-hi)] mb-1 line-clamp-1">
+                  <h3 className="font-display font-medium text-title text-anilytics-text-hi mb-1 line-clamp-1">
                     {card.primaryTitle}
                   </h3>
-                  <p className="text-[12.5px] text-[var(--text-low)] mb-2.5 line-clamp-1">
+                  <p className="text-body-sm text-anilytics-text-low mb-2.5 line-clamp-1">
                     {card.secondaryTitle || "\u00A0"}
                   </p>
 
@@ -168,13 +168,13 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                       {card.anime.genres.slice(0, 3).map((g) => (
                         <span
                           key={g}
-                          className="px-1.5 py-0.5 rounded text-[9.5px] font-mono tracking-wide bg-purple-500/10 border border-purple-500/20 text-purple-300"
+                          className="px-1.5 py-0.5 rounded text-badge font-mono tracking-wide bg-purple-500/10 border border-purple-500/20 text-purple-300"
                         >
                           {g}
                         </span>
                       ))}
                       {card.anime.genres.length > 3 && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-mono text-[var(--text-low)] bg-[var(--panel-2)] border border-[var(--line-soft)]">
+                        <span className="px-1.5 py-0.5 rounded text-3xs font-mono text-anilytics-text-low bg-anilytics-panel-2 border border-anilytics-line-soft">
                           +{card.anime.genres.length - 3}
                         </span>
                       )}
@@ -183,11 +183,11 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                 </div>
 
                 {/* Footer Meta Row with Score, Members, and Favourites */}
-                <div className="flex items-center justify-between pt-4 border-t border-[var(--line-soft)] mt-auto">
-                  <div className="flex items-center gap-3.5 font-mono text-xs text-[var(--text-mid)]">
+                <div className="flex items-center justify-between pt-4 border-t border-anilytics-line-soft mt-auto">
+                  <div className="flex items-center gap-3.5 font-mono text-xs text-anilytics-text-mid">
                     {/* Score */}
                     <span className="flex items-center gap-1">
-                      <svg viewBox="0 0 24 24" fill="#d8c48a" stroke="none" className="w-[12.5px] h-[12.5px]">
+                      <svg viewBox="0 0 24 24" fill="#d8c48a" stroke="none" className="w-3.125 h-3.125">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" />
                       </svg>
                       <span style={{ color: getScoreStyle(card.anime.score) }}>
@@ -196,21 +196,21 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                     </span>
 
                     {/* Members / Popularity */}
-                    <span className="flex items-center gap-1 text-[#93b9f2]">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[12.5px] h-[12.5px]">
+                    <span className="flex items-center gap-1 text-anilytics-metric-blue">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-3.125 h-3.125">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                         <circle cx="9" cy="7" r="4" />
                       </svg>
-                      <span className="text-[var(--text-mid)]">{card.anime.popularity.toLocaleString("en-US")}</span>
+                      <span className="text-anilytics-text-mid">{card.anime.popularity.toLocaleString("en-US")}</span>
                     </span>
 
                     {/* Favourites */}
                     {typeof card.anime.favourites === "number" && (
-                      <span className="flex items-center gap-1 text-[#f472b6]">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-[12.5px] h-[12.5px]">
+                      <span className="flex items-center gap-1 text-anilytics-metric-pink">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-3.125 h-3.125">
                           <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                         </svg>
-                        <span className="text-[var(--text-mid)]">{card.anime.favourites.toLocaleString("en-US")}</span>
+                        <span className="text-anilytics-text-mid">{card.anime.favourites.toLocaleString("en-US")}</span>
                       </span>
                     )}
                   </div>
@@ -219,7 +219,7 @@ export const SeasonalHighlights = memo(function SeasonalHighlights({
                     href={card.anime.siteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 font-medium text-[12.5px] text-[var(--purple-300)] group-hover:gap-2 transition-all"
+                    className="flex items-center gap-1.5 font-medium text-body-sm text-anilytics-purple-300 group-hover:gap-2 transition-all"
                   >
                     <span>AniList</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">

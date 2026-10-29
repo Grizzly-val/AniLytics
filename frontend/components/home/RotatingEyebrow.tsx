@@ -72,19 +72,19 @@ export function RotatingEyebrow() {
 
   return (
     <div className="flex items-center gap-2 mb-6.5 select-none">
-      <span className="flex items-baseline gap-1.75 font-mono text-[12px] tracking-[0.12em] text-[var(--purple-300)] uppercase whitespace-nowrap">
-        <span className="inline-block overflow-hidden h-[1.5em] leading-[1.5em] px-[1px]">
+      <span className="flex items-baseline gap-1.75 font-mono text-body-xs tracking-caps text-anilytics-purple-300 uppercase whitespace-nowrap">
+        <span className="inline-block overflow-hidden h-em leading-em px-px">
           <span className="inline-block" style={getSegmentStyle("season")}>
             {segLists.season[indices.season]}
           </span>
         </span>
-        <span className="inline-block overflow-hidden h-[1.5em] leading-[1.5em] px-[1px]">
+        <span className="inline-block overflow-hidden h-em leading-em px-px">
           <span className="inline-block" style={getSegmentStyle("year")}>
             {segLists.year[indices.year]}
           </span>
         </span>
         <span className="opacity-75">·</span>
-        <span className="inline-block overflow-hidden h-[1.5em] leading-[1.5em] px-[1px]">
+        <span className="inline-block overflow-hidden h-em leading-em px-px">
           <span className="inline-block" style={getSegmentStyle("format")}>
             {segLists.format[indices.format]}
           </span>

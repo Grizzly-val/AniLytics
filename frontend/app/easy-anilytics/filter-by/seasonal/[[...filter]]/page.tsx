@@ -17,7 +17,6 @@ import {
 } from "@/lib/utils";
 import {
   SeasonalBreadcrumb,
-  SeasonalBarClickHeader,
   SeasonalHeader,
   SeasonalUnsubmittedState,
   SeasonalLoadingState,
@@ -28,13 +27,11 @@ import {
   SeasonalHighlights,
   SeasonalScoreChart,
   ScoreChartItem,
-  AnimeListControls,
   SortByOption,
   SortOrderOption,
   ViewModeOption,
-  AnimeGrid,
   ProcessedAnime,
-  AnimeTable,
+  SeasonalAnimeSection,
   SeasonalAggregatesDrawer,
 } from "@/components/seasonal";
 import { useSeasonalData } from "@/lib/hooks/useSeasonalData";
@@ -89,6 +86,9 @@ export default function SeasonalPage({ params }: PageProps) {
 
   const [highlightedTitle, setHighlightedTitle] = useState<string | null>(null);
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Aggregates slide-over drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   // Available options from fetched data
   const availableGenres = useMemo(() => {
@@ -153,24 +153,7 @@ export default function SeasonalPage({ params }: PageProps) {
     setSelectedFormat("");
   }, []);
 
-  // Aggregates slide-over drawer state
-  const [drawerType, setDrawerType] = useState<"genre" | "format" | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-
-  const aggregatesData = useMemo(() => {
-    if (!data) return null;
-    if (drawerType === "genre") return data.genres.aggregates;
-    if (drawerType === "format") return data.formats.aggregates;
-    return null;
-  }, [data, drawerType]);
-
-  const handleOpenGenresAggregates = useCallback(() => {
-    setDrawerType("genre");
-    setIsDrawerOpen(true);
-  }, []);
-
-  const handleOpenFormatsAggregates = useCallback(() => {
-    setDrawerType("format");
+  const handleOpenAggregates = useCallback(() => {
     setIsDrawerOpen(true);
   }, []);
 
@@ -392,18 +375,9 @@ export default function SeasonalPage({ params }: PageProps) {
   }, []);
 
   return (
-    <div className="max-w-[1180px] mx-auto px-6 sm:px-12 pt-6 pb-24 space-y-7">
+    <div className="max-w-295 mx-auto px-6 sm:px-12 pt-6 pb-24 space-y-7">
       <SeasonalBreadcrumb />
 
-      {/* Header controls */}
-      {isFromBarClick ? (
-        <SeasonalBarClickHeader
-          activeItemName={activeItemName}
-          activeSeason={activeSeason}
-          activeYear={activeYear}
-          activeFilter={activeItemName}
-        />
-      ) : (
         <SeasonalHeader
           activeItemName={activeItemName}
           activeFilterCategory={activeFilterCategory}
@@ -424,10 +398,8 @@ export default function SeasonalPage({ params }: PageProps) {
           isLoadDisabled={isFilterUnchanged}
           errorMessage={apiError}
           hideBackLink={isFromHomepage}
-          onOpenGenresAggregates={handleOpenGenresAggregates}
-          onOpenFormatsAggregates={handleOpenFormatsAggregates}
+          onOpenAggregates={handleOpenAggregates}
         />
-      )}
 
       {/* Unsubmitted State */}
       {!isSubmitted && <SeasonalUnsubmittedState />}
@@ -482,37 +454,18 @@ export default function SeasonalPage({ params }: PageProps) {
               />
 
               {/* Anime List Controls & Views */}
-              <div className="space-y-4">
-                <AnimeListControls
-                  searchQuery={searchQuery}
-                  onSearchQueryChange={setSearchQuery}
-                  sortBy={sortBy}
-                  onSortByChange={handleSortByChange}
-                  sortOrder={sortOrder}
-                  onToggleSortOrder={handleToggleSortOrder}
-                  viewMode={viewMode}
-                  onViewModeChange={setViewMode}
-                />
-
-                {viewMode === "grid" && (
-                  <AnimeGrid
-                    items={processedAnimes}
-                    highlightedTitle={highlightedTitle}
-                  />
-                )}
-                {viewMode === "table" && (
-                  <AnimeTable
-                    items={processedAnimes}
-                    highlightedTitle={highlightedTitle}
-                  />
-                )}
-
-                {processedAnimes.length === 0 && searchQuery && (
-                  <div className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-8 text-center text-neutral-400">
-                    No anime found matching &quot;{searchQuery}&quot;.
-                  </div>
-                )}
-              </div>
+              <SeasonalAnimeSection
+                items={processedAnimes}
+                highlightedTitle={highlightedTitle}
+                searchQuery={searchQuery}
+                onSearchQueryChange={setSearchQuery}
+                sortBy={sortBy}
+                onSortByChange={handleSortByChange}
+                sortOrder={sortOrder}
+                onToggleSortOrder={handleToggleSortOrder}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+              />
             </>
           )}
         </>
@@ -522,11 +475,11 @@ export default function SeasonalPage({ params }: PageProps) {
       <SeasonalAggregatesDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        type={drawerType}
-        aggregatesData={aggregatesData}
+        type={selectedFormat ? "format" : "genre"}
+        genresAggregates={data?.genres?.aggregates}
+        formatsAggregates={data?.formats?.aggregates}
         onSelectCategory={handleSelectDrawerCategory}
       />
     </div>
   );
 }
-

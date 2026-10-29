@@ -1,4 +1,10 @@
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { AnimeTitle, Season, MediaFormat } from "./types";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const SEASONS: Season[] = ["WINTER", "SPRING", "SUMMER", "FALL"];
 export const FORMATS: MediaFormat[] = [
